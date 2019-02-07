@@ -20,6 +20,8 @@
   "homepage": "https://github.com/1dv612/ke222pf-examination#readme",
   "dependencies": {
     "concurrently": "^4.1.0",
+    "dotenv": "^6.2.0",
+    "mongoose": "^5.4.10",
     "nodemon": "^1.18.9",
     "restify": "^7.7.0"
   }
