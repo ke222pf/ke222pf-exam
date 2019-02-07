@@ -4,13 +4,13 @@ const GitHubStrategy = require('passport-github').Strategy;
 const fetch = require('node-fetch')
 module.exports = server => {
 
-    passport.serializeUser((profile, cb) => {
-        console.log(profile.id)
-        cb(null, profile.id)
+    passport.serializeUser((user, cb) => {
+        // console.log(profile.id)
+        cb(null, user.id)
     })
     
-    passport.deserializeUser((profile, done) => {
-        done(null, profile)
+    passport.deserializeUser((user, done) => {
+        done(null, user)
     })
     passport.use(new GitHubStrategy({
         clientID: process.env.CLIENT_ID,
@@ -18,7 +18,6 @@ module.exports = server => {
         callbackURL: 'http://localhost:5000/login/callback'
     },
     function(accessToken, refreshToken, profile, cb) {
-        // console.log(accessToken)
         return cb(null, profile)
     }
     ))
@@ -32,12 +31,7 @@ module.exports = server => {
     server.get('/login/callback', 
     passport.authenticate('github', { failureRedirect: '/login' }),
     function(req, res, next) {
-      res.redirect('/', next);
+        console.log(req.user)
+      res.redirect('/login', next)
     })
-
-    // server.get('/login/callback',
-    // passport.authenticate('github'), (req, res, next) => {
-    //     console.log(res.accessToken)
-    //     res.redirect('http://localhost:5000' + '?access_token' + res.accessToken, next)
-    // })
 }   

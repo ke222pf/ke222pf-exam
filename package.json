@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "server": "nodemon index.js"
+    "server": "nodemon index.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -20,6 +22,7 @@
   "homepage": "https://github.com/1dv612/ke222pf-examination#readme",
   "dependencies": {
     "concurrently": "^4.1.0",
+    "create-react-app": "^2.1.3",
     "dotenv": "^6.2.0",
     "mongoose": "^5.4.10",
     "node-fetch": "^2.3.0",
