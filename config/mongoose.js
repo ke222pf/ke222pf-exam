@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 const url = process.env.DB_URL
 module.exports = function () {
-    mongoose.connect(url)
+    mongoose.connect(url, { useNewUrlParser: true })
     mongoose.connection.on('connected', function () {
       console.log('mongoose default connection open to ', url)
     })
