@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import HomePage from './components/HomePage'
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
 
 class App extends Component {
   render() {
