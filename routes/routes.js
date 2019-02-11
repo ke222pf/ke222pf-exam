@@ -18,9 +18,9 @@ module.exports = server => {
         clientSecret: process.env.CLIENT_SECRET,
         callbackURL: 'http://localhost:5000/login/callback'
     },
-    function(accessToken, refreshToken, profile, cb) {
+    function(accessToken, refreshToken, profile, done) {
         // sätta upp id till mongoDB
-        return cb(null, profile)
+        return done(null, profile)
     }
     ))
     
@@ -29,11 +29,16 @@ module.exports = server => {
         scope: ['repo']
     }))
     
-    server.get('/login/callback', 
+    server.get('/login/callback',
     passport.authenticate('github', { failureRedirect: '/login' }),
     function(req, res, next) {
-        console.log(req.user)
         // rendera klient sida
         res.redirect('http://localhost:3000/login', next)
+    })
+    server.get('/logout', function(req, res, next) {
+        console.log('user wants to logout!')
+        console.log(req.user)
+        req.logout()
+        res.redirect('http://localhost:3000/', next)
     })
 }   

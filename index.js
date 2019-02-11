@@ -2,14 +2,16 @@ const restify = require('restify');
 const server = restify.createServer();
 const mongoose = require('./config/mongoose')
 const passport = require('passport')
+const helmet = require('helmet')
 // const proxy = require('http-proxy-middleware')
 
 
 
 mongoose()
-
+server.use(helmet())
 server.use(restify.plugins.bodyParser({requestBodyOnGet: true}))
 server.use(restify.plugins.queryParser())
+
 
 server.use(passport.initialize())
 require('./routes/routes')(server)
