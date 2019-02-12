@@ -1,17 +1,18 @@
 require('dotenv').config()
 const passport = require('passport')
 const GitHubStrategy = require('passport-github').Strategy;
+const User = require('../models/user')
 
 
 module.exports = server => {
 
-    passport.serializeUser((user, cb) => {
+    passport.serializeUser((user_id, cb) => {
         // console.log(profile.id)
-        cb(null, user.id)
+        cb(null, user_id)
     })
     
-    passport.deserializeUser((user, done) => {
-        done(null, user)
+    passport.deserializeUser((user_id, done) => {
+        done(null, user_id)
     })
     passport.use(new GitHubStrategy({
         clientID: process.env.CLIENT_ID,
@@ -20,6 +21,11 @@ module.exports = server => {
     },
     function(accessToken, refreshToken, profile, done) {
         // sätta upp id till mongoDB
+        new User({
+            githubId: profile.id
+        }).save().then((newUser) => {
+            console.log('created' + newUser)
+        })
         return done(null, profile)
     }
     ))
@@ -37,7 +43,7 @@ module.exports = server => {
     })
     server.get('/logout', function(req, res, next) {
         console.log('user wants to logout!')
-        console.log(req.user)
+        console.log(req.user_id)
         req.logout()
         res.redirect('http://localhost:3000/', next)
     })
