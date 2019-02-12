@@ -20,11 +20,18 @@ module.exports = server => {
         callbackURL: 'http://localhost:5000/login/callback'
     },
     function(accessToken, refreshToken, profile, done) {
-        // sätta upp id till mongoDB
-        new User({
-            githubId: profile.id
-        }).save().then((newUser) => {
-            console.log('created' + newUser)
+        // titta så att användaren inte skapar en kopia till databasen.
+        User.findOne({githubId: profile.id}).then((currentUser) => {
+            if(currentUser) {
+                // user already existing in mongoDB.
+
+            } else {
+            new User({
+                githubId: profile.id
+            }).save().then((newUser) => {
+                console.log('created' + newUser)
+            })
+            }
         })
         return done(null, profile)
     }
