@@ -29,7 +29,7 @@ module.exports = server => {
             new User({
                 githubId: profile.id
             }).save().then((newUser) => {
-                console.log('created' + newUser)
+                console.log('created user' + newUser)
             })
             }
         })
