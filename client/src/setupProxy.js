@@ -1,0 +1,8 @@
+
+var proxy = require('http-proxy-middleware')
+
+module.exports = function(app) {
+    app.use('/github.com/login/oauth/authorize', proxy({ target: 'http://localhost:5000'}))
+    app.use('/api/*', proxy({ target: 'http://localhost:5000'}))
+}
+
