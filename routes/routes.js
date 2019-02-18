@@ -11,7 +11,7 @@ module.exports = server => {
         scope: ['repo']
     }))
     
-    server.get('/api/current_user', (req, res, next) => {
+    server.get('/api/currentUser', (req, res, next) => {
         console.log(req.user)
         res.send(req.user)
         next
@@ -21,11 +21,10 @@ module.exports = server => {
     passport.authenticate('github'),
     (req, res, next) => {
         // rendera klient sida
-        // console.log(req.user)
             res.redirect('http://localhost:3000/login', next)
     })
 
-    server.get('/api/logout', function(req, res, next) {
+    server.get('/api/logout', (req, res, next) => {
         console.log('user wants to logout!')
         console.log(req.user)
         req.logout()

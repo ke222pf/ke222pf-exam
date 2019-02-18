@@ -3,12 +3,10 @@ const mongoose = require('./config/mongoose')
 const passport = require('passport')
 const cookieSession = require('cookie-session')
 
-require('./models/user')
 require('./config/passport')
 
 mongoose()
 
-// server.use(helmet())
 
 const server = restify.createServer()
 
@@ -20,13 +18,12 @@ server.use(cookieSession({
     keys: ['oaisjdpaojsdoajsdpoajsd']
 }))
 
-
 server.use(passport.initialize())
 server.use(passport.session())
 
 require('./routes/routes')(server)
 
 
-server.listen(5000, function() {
+server.listen(5000, () => {
     console.log('%s listening at %s', server.name, server.url);
   });

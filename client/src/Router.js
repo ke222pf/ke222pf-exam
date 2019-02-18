@@ -1,7 +1,7 @@
 import React from 'react'
 import App from './App'
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
-import Login from './components/Login'
+import Login from './components/Authenticate'
 console.log('är i routes')
 const Router = () => (
   <BrowserRouter>
