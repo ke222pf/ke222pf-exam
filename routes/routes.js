@@ -5,7 +5,7 @@ const passport = require("passport")
 
 module.exports = server => {
   server.get(
-    "/github.com/login/oauth/authorize",
+    "/api/login/github",
     passport.authenticate("github", {
       scope: ["repo"]
     })
@@ -33,7 +33,7 @@ module.exports = server => {
     res.redirect("http://localhost:3000/", next)
   })
 
-  server.get("/api/repos", async (req, res, next) => {
+  server.get("/api/orgs", async (req, res, next) => {
     let client = github.client(req.user.token, {
       Accept: 'application/vnd.github.v3+json'
     })
@@ -45,10 +45,33 @@ module.exports = server => {
             url: element.url,
             issues: element.issues_url,
             hook: element.hooks_url,
-            img: element.avatar_url
+            img: element.avatar_url,
+            id: element.id
           })
         })
         res.send(container)
       })
+  })
+  
+  server.get('/api/repos', (req, res, next) => {
+    let client = github.client(req.user.token, {
+      Accept: 'application/vnd.github.v3+json'
+    })
+    let container = []
+    client.get('user/repos', (err, status, body, headers) => {
+      // console.log(body)
+      body.forEach(element => {
+        // console.log(element.full_name)
+        container.push({
+          repo: element.full_name,
+          description: element.description,
+          Organizations: element.owner.id,
+          commits: element.commits_url,
+
+          
+        })
+      })
+      res.send(container)
+    })
   })
 }

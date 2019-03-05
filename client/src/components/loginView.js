@@ -1,6 +1,7 @@
 import React from "react"
 import { Navbar, NavItem } from "react-materialize"
 import Organizations from "./Organization"
+import "../LoginView.css"
 
 const loginView = () => {
   return (
@@ -15,7 +16,7 @@ const loginView = () => {
       />
       <Navbar brand="logo" right>
         <NavItem onClick={() => console.log("test click")}>
-          example something!
+          Notification Settings
         </NavItem>
         <NavItem href="/api/logout">Logout</NavItem>
       </Navbar>

@@ -1,7 +1,8 @@
 import React, { Component } from "react"
+import {withRouter} from "react-router-dom"
 import "../Organization.css"
 import { Card, CardTitle, Col } from "react-materialize"
-export default class organization extends Component {
+class organization extends Component {
   constructor() {
     super()
     this.state = {
@@ -9,10 +10,10 @@ export default class organization extends Component {
     }
   }
   async componentDidMount() {
-    const response = await fetch("/api/repos")
+    const response = await fetch("/api/orgs")
     const json = await response.json()
     this.setState({ orgs: json })
-    console.log(this.state)
+    // console.log(this.state)
   }
 
   render() {
@@ -26,7 +27,8 @@ export default class organization extends Component {
                   <Card
                     horizontal
                     header={<CardTitle image={item.img}/>}
-                    actions={[<a key={index}href="#">Sign up for hook</a>]}
+                    // actions={[<a key={index}href="/settings">Subscribe a hook for a repo</a>]}
+                    onClick={() => this.props.history.push("/settings", { id: item.id})}
                   >
                     <h3>{item.Organizations}</h3>
                   </Card>
@@ -39,3 +41,5 @@ export default class organization extends Component {
     )
   }
 }
+
+export default withRouter(organization)
