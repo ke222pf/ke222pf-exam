@@ -24,24 +24,14 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       // titta så att användaren inte skapar en kopia till databasen.
       await User.findOne({ githubId: profile.id }).then(currentUser => {
-        User.findOneAndUpdate(
-            { githubId: profile.id },
-            { $set: { token: accessToken } },
-            (err, result) => {
-              if (err) {
-                console.log(err)
-              } else {
-                console.log(result)
-              }
-            }
-          )
-          console.log(accessToken, "accessToken")
+          console.log(profile.username)
           if (currentUser) {
           return done(null, currentUser)
         } else {
           new User({
             githubId: profile.id,
-            token: ""
+            token: "",
+            username: profile.username
           })
             .save()
             .then(newUser => {
@@ -50,6 +40,17 @@ passport.use(
             })
         }
       })
+      await User.findOneAndUpdate(
+        { githubId: profile.id },
+        { $set: { token: accessToken } },
+        (err, result) => {
+          if (err) {
+            console.log(err)
+          } else {
+            console.log(result)
+          }
+        }
+      )
     }
   )
 )

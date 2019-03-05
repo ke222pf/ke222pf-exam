@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const userSchema = new Schema({
   githubId: String,
-  token: String
+  token: String,
+  username: String
 })
 
 const User = mongoose.model("user", userSchema)

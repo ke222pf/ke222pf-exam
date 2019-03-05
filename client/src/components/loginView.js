@@ -1,5 +1,6 @@
 import React from "react"
 import { Navbar, NavItem } from "react-materialize"
+import Organizations from "./Organization"
 
 const loginView = () => {
   return (
@@ -18,6 +19,7 @@ const loginView = () => {
         </NavItem>
         <NavItem href="/api/logout">Logout</NavItem>
       </Navbar>
+    <Organizations/>
     </React.Fragment>
   )
 }
