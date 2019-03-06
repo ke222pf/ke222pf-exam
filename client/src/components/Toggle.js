@@ -1,4 +1,6 @@
 import React, { Component } from "react"
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost:5000')
 
 export default class Toggle extends Component {
     constructor(props) {
@@ -14,6 +16,8 @@ export default class Toggle extends Component {
       this.setState({
           checked: !this.state.checked
       })
+
+      socket.emit('boolean', this.state.checked)
     }
   render() {
     return (

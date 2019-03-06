@@ -7,7 +7,9 @@ require("./config/passport")
 
 mongoose()
 
-const server = restify.createServer()
+const server = restify.createServer(({
+  socketio:true
+}))
 
 server.use(restify.plugins.bodyParser({ requestBodyOnGet: true }))
 server.use(restify.plugins.queryParser())
@@ -22,8 +24,24 @@ server.use(
 server.use(passport.initialize())
 server.use(passport.session())
 
-require("./routes/routes")(server)
+// server = http.createServer(app)
 
-server.listen(5000, () => {
-  console.log("%s listening at %s", server.name, server.url)
+require("./routes/routes")(server)
+let io = require('socket.io')(server.server)
+
+io.on('connection', client => {
+  console.log('websocket is connected')
+  client.on('boolean',(data) => {
+    console.log(data)
+  })
 })
+
+server.use(function (req, res, next) {
+  req.io = io
+  next()
+})
+
+  server.listen(5000, (err) => {
+    console.log("%s listening at %s", server.name, server.url)
+  })
+

@@ -4,15 +4,15 @@ require("dotenv").config()
 const passport = require("passport")
 
 module.exports = server => {
+
   server.get(
     "/api/login/github",
     passport.authenticate("github", {
       scope: ["repo"]
     })
   )
-
   server.get("/api/currentUser", (req, res, next) => {
-    console.log(req.user)
+    // console.log(req.user)
     res.send(req.user)
     next
   })
@@ -27,8 +27,8 @@ module.exports = server => {
   )
 
   server.get("/api/logout", (req, res, next) => {
-    console.log("user wants to logout!")
-    console.log(req.user)
+    // console.log("user wants to logout!")
+    // console.log(req.user)
     req.logout()
     res.redirect("http://localhost:3000/", next)
   })

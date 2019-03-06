@@ -6,7 +6,8 @@ export default class Notifications extends Component {
     super()
     this.state = {
       repos: [],
-      checked: false
+      checked: false,
+      endPoint: "/endPoint"
     }
   }
   async componentDidMount() {
@@ -16,10 +17,11 @@ export default class Notifications extends Component {
     this.setState({ repos: json })
     console.log(this.state)
   }
-
+  
   render() {
     return (
       <div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
         <ul>
           {this.state.repos.map((item, index) => {
             if (this.props.location.state.id === item.Organizations) {

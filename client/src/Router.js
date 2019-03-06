@@ -3,7 +3,7 @@ import App from "./App"
 import Notifications from "./components/Notifications"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import Login from "./components/Authenticate"
-console.log("är i routes")
+
 const Router = () => (
   <BrowserRouter>
     <Switch>

@@ -3,12 +3,12 @@ const User = require("../models/user")
 const passport = require("passport")
 
 passport.serializeUser((user, done) => {
-  console.log(user.id, "from serialize")
+  // console.log(user.id, "from serialize")
   done(null, user.id)
 })
 
 passport.deserializeUser((id, done) => {
-  console.log(id, "from mongoDB")
+  // console.log(id, "from mongoDB")
   User.findById(id).then(user => {
     done(null, user)
   })
@@ -35,7 +35,7 @@ passport.use(
           })
             .save()
             .then(newUser => {
-              console.log("created user" + newUser)
+              // console.log("created user" + newUser)
               return done(null, newUser)
             })
         }
@@ -47,7 +47,7 @@ passport.use(
           if (err) {
             console.log(err)
           } else {
-            console.log(result)
+            // console.log(result)
           }
         }
       )
