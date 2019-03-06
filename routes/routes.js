@@ -67,8 +67,6 @@ module.exports = server => {
           description: element.description,
           Organizations: element.owner.id,
           commits: element.commits_url,
-
-          
         })
       })
       res.send(container)

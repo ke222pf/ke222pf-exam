@@ -20,7 +20,7 @@ const loginView = () => {
         </NavItem>
         <NavItem href="/api/logout">Logout</NavItem>
       </Navbar>
-    <Organizations/>
+      <Organizations />
     </React.Fragment>
   )
 }
