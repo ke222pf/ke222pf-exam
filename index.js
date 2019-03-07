@@ -2,6 +2,8 @@ const restify = require("restify")
 const mongoose = require("./config/mongoose")
 const passport = require("passport")
 const cookieSession = require("cookie-session")
+// const settings = require("./utils/notificationSettings")
+const settings = require("./models/hookSettings")
 
 require("./config/passport")
 
@@ -24,17 +26,12 @@ server.use(
 server.use(passport.initialize())
 server.use(passport.session())
 
-// server = http.createServer(app)
 
 require("./routes/routes")(server)
 let io = require('socket.io')(server.server)
 
-io.on('connection', client => {
-  console.log('websocket is connected')
-  client.on('boolean',(data) => {
-    console.log(data)
-  })
-})
+require("./utils/notificationSettings")(io)
+
 
 server.use(function (req, res, next) {
   req.io = io
