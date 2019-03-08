@@ -2,6 +2,7 @@
 let github = require('octonode')
 require("dotenv").config()
 const passport = require("passport")
+const client = require('../utils/authGithub')
 
 module.exports = (server) => {
 
@@ -32,11 +33,9 @@ module.exports = (server) => {
 
   server.get("/api/orgs", async (req, res, next) => {
     try {
-    let client = github.client(req.user.token, {
-      Accept: 'application/vnd.github.v3+json'
-    })
+     let githubUser = client(req.user.token)
     let container = []
-     client.get(`/user/orgs`, (err, status, body, headers) => {
+     githubUser.get(`/user/orgs`, (err, status, body, headers) => {
        if(body) {
          body.forEach(element => {
            container.push({
@@ -58,16 +57,11 @@ module.exports = (server) => {
   
   server.get('/api/repos',(req, res, next) => {
     try {
-      let client = github.client(req.user.token, {
-        Accept: 'application/vnd.github.v3+json'
-      })
+      let githubUser = client(req.user.token)
       let container = []
-      client.get('user/repos', (err, status, body, headers) => {
+      githubUser.get('user/repos', (err, status, body, headers) => {
         if(body) {
-
           body.forEach(element => {
-            // console.log(element.full_name)
-            // if(element.permissions.admin === true) {
               container.push({
                 repo: element.full_name,
                 description: element.description,
@@ -76,7 +70,6 @@ module.exports = (server) => {
                 hook: element.hooks_url,
                 admin: element.permissions.admin
               })
-              // }
             })
           }
           res.json(container)
@@ -84,6 +77,10 @@ module.exports = (server) => {
       } catch(e) {
         console.log(e, 'NOT ALLOWED')
       }
+  })
+
+  server.post('/hook', (req, res, ) => {
+    console.log(req.body)
   })
 
 

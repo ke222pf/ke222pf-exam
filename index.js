@@ -4,7 +4,8 @@ const passport = require("passport")
 const cookieSession = require("cookie-session")
 // const settings = require("./utils/notificationSettings")
 const settings = require("./models/hookSettings")
-
+require('dotenv').config()
+const PORT = process.env.PORT || 5000
 require("./config/passport")
 
 mongoose()
@@ -34,7 +35,7 @@ require("./utils/notificationSettings")(io)
 
 
 
-  server.listen(5000, (err) => {
+  server.listen(PORT, (err) => {
     console.log("%s listening at %s", server.name, server.url)
   })
 

@@ -10,7 +10,7 @@ export default class Toggle extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  handleChange() {
+ async handleChange() {
     this.setState({
       checked: !this.state.checked
     })
@@ -19,9 +19,17 @@ export default class Toggle extends Component {
     this.props.socketIo.emit("boolean", {
       boolean: !this.state.checked,
       belongs: this.props.repo,
-      hook: this.props.hook
+      hook: this.props.hook,
+      username: await this.getUser()
     })
   }
+  async getUser() {
+    const response = await fetch("/api/currentUser")
+    const json = await response.json()
+    console.log(json)
+    return json.username
+  }
+
   checker() {
     let isChecked 
     if (this.props.setting) {
