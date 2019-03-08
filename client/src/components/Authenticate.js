@@ -9,14 +9,16 @@ export default class Login extends Component {
       authenticate: false
     }
   }
-  componentDidMount() {
-    fetch("/api/currentUser")
-      .then(res => res.json())
-      .then(response => {
-        this.setState({ authenticate: response })
-        console.log(this.state.authenticate)
-      })
-      .catch(err => console.log(err))
+  async componentDidMount() {
+    try {
+    const response = await fetch("/api/currentUser")
+    const json = await response.json()
+    console.log(json)
+    this.setState({ authenticate: json })
+  }
+  catch(e) {
+    console.log(e)
+  }
   }
   render() {
     return this.state.authenticate ? <LoginView /> : <HomePage />

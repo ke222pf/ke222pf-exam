@@ -10,6 +10,10 @@ const NotificationSetting = new Schema({
     type: String,
     required: true,
     unique: true
+  },
+  hook: {
+    type: String,
+    required: true
   }
 })
 

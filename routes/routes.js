@@ -3,7 +3,7 @@ let github = require('octonode')
 require("dotenv").config()
 const passport = require("passport")
 
-module.exports = server => {
+module.exports = (server) => {
 
   server.get(
     "/api/login/github",
@@ -12,8 +12,7 @@ module.exports = server => {
     })
   )
   server.get("/api/currentUser", (req, res, next) => {
-    // console.log(req.user)
-    res.send(req.user)
+    res.json(req.user)
     next
   })
 
@@ -27,49 +26,66 @@ module.exports = server => {
   )
 
   server.get("/api/logout", (req, res, next) => {
-    // console.log("user wants to logout!")
-    // console.log(req.user)
     req.logout()
     res.redirect("http://localhost:3000/", next)
   })
 
   server.get("/api/orgs", async (req, res, next) => {
+    try {
     let client = github.client(req.user.token, {
       Accept: 'application/vnd.github.v3+json'
     })
     let container = []
      client.get(`/user/orgs`, (err, status, body, headers) => {
-       body.forEach(element => {
-        container.push({
-            Organizations: element.login,
-            url: element.url,
-            issues: element.issues_url,
-            hook: element.hooks_url,
-            img: element.avatar_url,
-            id: element.id
+       if(body) {
+         body.forEach(element => {
+           container.push({
+             Organizations: element.login,
+             url: element.url,
+             issues: element.issues_url,
+             hook: element.hooks_url,
+             img: element.avatar_url,
+             id: element.id
+            })
           })
-        })
-        res.send(container)
+        }
+        res.json(container)
       })
+    }catch(e) {
+      console.log(e)
+    }
   })
   
-  server.get('/api/repos', (req, res, next) => {
-    let client = github.client(req.user.token, {
-      Accept: 'application/vnd.github.v3+json'
-    })
-    let container = []
-    client.get('user/repos', (err, status, body, headers) => {
-      // console.log(body)
-      body.forEach(element => {
-        // console.log(element.full_name)
-        container.push({
-          repo: element.full_name,
-          description: element.description,
-          Organizations: element.owner.id,
-          commits: element.commits_url,
-        })
+  server.get('/api/repos',(req, res, next) => {
+    try {
+      let client = github.client(req.user.token, {
+        Accept: 'application/vnd.github.v3+json'
       })
-      res.send(container)
-    })
+      let container = []
+      client.get('user/repos', (err, status, body, headers) => {
+        if(body) {
+
+          body.forEach(element => {
+            // console.log(element.full_name)
+            // if(element.permissions.admin === true) {
+              container.push({
+                repo: element.full_name,
+                description: element.description,
+                Organizations: element.owner.id,
+                commits: element.commits_url,
+                hook: element.hooks_url,
+                admin: element.permissions.admin
+              })
+              // }
+            })
+          }
+          res.json(container)
+        })
+      } catch(e) {
+        console.log(e, 'NOT ALLOWED')
+      }
   })
+
+
+
 }

@@ -27,16 +27,12 @@ server.use(passport.initialize())
 server.use(passport.session())
 
 
-require("./routes/routes")(server)
 let io = require('socket.io')(server.server)
 
+require("./routes/routes")(server, io)
 require("./utils/notificationSettings")(io)
 
 
-server.use(function (req, res, next) {
-  req.io = io
-  next()
-})
 
   server.listen(5000, (err) => {
     console.log("%s listening at %s", server.name, server.url)

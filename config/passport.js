@@ -22,35 +22,35 @@ passport.use(
       callbackURL: "http://localhost:5000/login/callback"
     },
     async (accessToken, refreshToken, profile, done) => {
-      // titta så att användaren inte skapar en kopia till databasen.
-      await User.findOne({ githubId: profile.id }).then(currentUser => {
+      try {
+        if (!accessToken) {
+          throw new Error("not allowed")
+        }
+        // titta så att användaren inte skapar en kopia till databasen.
+        await User.findOne({ githubId: profile.id }).then(currentUser => {
           console.log(profile.username)
           if (currentUser) {
-          return done(null, currentUser)
-        } else {
-          new User({
-            githubId: profile.id,
-            token: "",
-            username: profile.username
-          })
-            .save()
-            .then(newUser => {
-              // console.log("created user" + newUser)
-              return done(null, newUser)
-            })
-        }
-      })
-      await User.findOneAndUpdate(
-        { githubId: profile.id },
-        { $set: { token: accessToken } },
-        (err, result) => {
-          if (err) {
-            console.log(err)
+            return done(null, currentUser)
           } else {
-            // console.log(result)
+            new User({
+              githubId: profile.id,
+              token: "",
+              username: profile.username
+            })
+              .save()
+              .then(newUser => {
+                // console.log("created user" + newUser)
+                return done(null, newUser)
+              })
           }
-        }
-      )
+        })
+        await User.findOneAndUpdate(
+          { githubId: profile.id },
+          { $set: { token: accessToken } }
+        )
+      } catch (e) {
+        console.log("NOT ALLOWED", e)
+      }
     }
   )
 )
