@@ -5,8 +5,8 @@ import openSocket from "socket.io-client"
 const socket = openSocket("http://localhost:5000")
 
 export default class Notifications extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       repos: [],
       endPoint: "/endPoint",
@@ -16,6 +16,11 @@ export default class Notifications extends Component {
   componentDidMount() {
     this.getData()
     this.fetchRepos()
+
+  
+  socket.on('notification', data => {
+          console.log(data)
+    })
   }
   getData() {
     socket.emit("sendData")
@@ -30,11 +35,11 @@ export default class Notifications extends Component {
       const response = await fetch("/api/repos")
       const json = await response.json()
       this.setState({ repos: json })
-    } catch(e) {
+    } catch (e) {
       console.log(e)
     }
   }
-  
+
   render() {
     return (
       <div>
@@ -44,16 +49,17 @@ export default class Notifications extends Component {
               return (
                 <li key={index}>
                   <h3>{item.repo}</h3>
-                  {
-                    item.admin ? 
+                  {item.admin ? (
                     <Toggle
                       hook={item.hook}
                       belongsTo={item.repo}
                       repo={item.repo}
                       socketIo={socket}
                       setting={this.state.setting}
-                    /> : <p>No promission allowed</p>
-                  }
+                    />
+                  ) : (
+                    <p>No promission allowed</p>
+                  )}
                 </li>
               )
             }

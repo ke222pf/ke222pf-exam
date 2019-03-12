@@ -4,13 +4,16 @@ export default class Toggle extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      checked: this.checker()
+      checked: this.checker(),
+      user: ""
     }
     // this.checker = this.checker.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
-
- async handleChange() {
+componentDidMount() {
+this.getUser()
+}
+ handleChange() {
     this.setState({
       checked: !this.state.checked
     })
@@ -20,13 +23,14 @@ export default class Toggle extends Component {
       boolean: !this.state.checked,
       belongs: this.props.repo,
       hook: this.props.hook,
-      username: await this.getUser()
+      username: this.state.user
     })
   }
   async getUser() {
     const response = await fetch("/api/currentUser")
     const json = await response.json()
     console.log(json)
+    this.setState({user: json.username})
     return json.username
   }
 

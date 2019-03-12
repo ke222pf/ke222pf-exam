@@ -29,7 +29,10 @@ passport.use(
         // titta så att användaren inte skapar en kopia till databasen.
         await User.findOne({ githubId: profile.id }).then(currentUser => {
           console.log(profile.username)
+          
           if (currentUser) {
+          
+
             return done(null, currentUser)
           } else {
             new User({

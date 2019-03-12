@@ -6,13 +6,15 @@ export default class Login extends Component {
   constructor() {
     super()
     this.state = {
-      authenticate: false
+      authenticate: false,
+      user: ""
     }
   }
   async componentDidMount() {
     try {
     const response = await fetch("/api/currentUser")
     const json = await response.json()
+    this.setState({user: json})
     console.log(json)
     this.setState({ authenticate: json })
   }
@@ -21,6 +23,6 @@ export default class Login extends Component {
   }
   }
   render() {
-    return this.state.authenticate ? <LoginView /> : <HomePage />
+    return this.state.authenticate ? <LoginView currentUser={this.state.user}/> : <HomePage />
   }
 }

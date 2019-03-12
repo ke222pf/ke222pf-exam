@@ -3,8 +3,8 @@ import { withRouter } from "react-router-dom"
 import "../Organization.css"
 import { Card, CardTitle, Col } from "react-materialize"
 class organization extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       orgs: []
     }
@@ -33,7 +33,7 @@ class organization extends Component {
                     horizontal
                     header={<CardTitle image={item.img} />}
                     onClick={() =>
-                      this.props.history.push("/settings", { id: item.id })
+                      this.props.history.push("/settings", { id: item.id, currentUser: this.props.currentUser })
                     }
                   >
                     <h3>{item.Organizations}</h3>

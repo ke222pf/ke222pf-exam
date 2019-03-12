@@ -1,15 +1,18 @@
 const settings = require("../models/hookSettings")
 const authClinet = require("../utils/githubHook")
 const User = require("../models/user")
+const hook = require("../models/hookSender")
+const setUpHook = require("../utils/setUpHook")
+const removeHook = require("../utils/removeHook")
 module.exports = client => {
   client.on("boolean", async data => {
-    console.log(data, "från clienten")
     let currentRepo = await settings.findOne({ belongsTo: data.belongs })
     if (!currentRepo) {
       new settings({
         bool: data.boolean,
         belongsTo: data.belongs,
-        hook: data.hook
+        hook: data.hook,
+        curretUser: data.username
       }).save()
     } else {
       await settings.findOneAndUpdate(
@@ -17,24 +20,12 @@ module.exports = client => {
         { $set: { bool: data.boolean } }
       )
     }
-    let currentUser = await User.findOne({username: data.username})
-    console.log(data.boolean, 'this belongs to')
-    let githubUser = authClinet(data.hook, data.belongs, currentUser.token)
-    githubUser.hook(
-      {
-        name: "web",
-        active: true,
-        events: ["push", "issues"],
-        config: {
-          url: `http://localhost:5000/hook`
-        }
-      },
-      (err, result) => {
-        if (err) {
-          console.log(err)
-        }
-        console.log(result)
-      }
-    )
+    console.log(data.boolean, "value")
+    if (data.boolean === true) {
+      setUpHook(data)
+      console.log("add web hook")
+    } else {
+      removeHook(data)
+    }
   })
 }

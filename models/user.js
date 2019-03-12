@@ -4,7 +4,11 @@ const Schema = mongoose.Schema
 const userSchema = new Schema({
   githubId: String,
   token: String,
-  username: String
+  username: String,
+  socketId: {
+    type: String,
+    required: true
+  }
 })
 
 const User = mongoose.model("user", userSchema)

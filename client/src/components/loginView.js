@@ -3,7 +3,7 @@ import { Navbar, NavItem } from "react-materialize"
 import Organizations from "./Organization"
 import "../LoginView.css"
 
-const loginView = () => {
+const loginView = (props) => {
   return (
     <React.Fragment>
       <link
@@ -20,7 +20,7 @@ const loginView = () => {
         </NavItem>
         <NavItem href="/api/logout">Logout</NavItem>
       </Navbar>
-      <Organizations />
+      <Organizations currentUser={props.currentUser} />
     </React.Fragment>
   )
 }

@@ -4,6 +4,7 @@ const passport = require("passport")
 const cookieSession = require("cookie-session")
 // const settings = require("./utils/notificationSettings")
 const settings = require("./models/hookSettings")
+var cookieParser = require('cookie-parser')
 require('dotenv').config()
 const PORT = process.env.PORT || 5000
 require("./config/passport")
@@ -15,6 +16,7 @@ const server = restify.createServer(({
 }))
 
 server.use(restify.plugins.bodyParser({ requestBodyOnGet: true }))
+
 server.use(restify.plugins.queryParser())
 
 server.use(
@@ -22,15 +24,21 @@ server.use(
     maxAge: 30 * 24 * 60 * 60 * 1000,
     keys: ["oaisjdpaojsdoajsdpoajsd"]
   })
-)
-
-server.use(passport.initialize())
-server.use(passport.session())
-
-
+  )
+  
+  server.use(passport.initialize())
+  server.use(passport.session())
+  
+  
+  server.use(cookieParser())
 let io = require('socket.io')(server.server)
 
-require("./routes/routes")(server, io)
+server.use(function (req, res, next) {
+  req.io = io
+  next()
+})
+
+require("./routes/routes")(server)
 require("./utils/notificationSettings")(io)
 
 
