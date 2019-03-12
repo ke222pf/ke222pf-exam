@@ -16,20 +16,23 @@ export default class Notifications extends Component {
   componentDidMount() {
     this.getData()
     this.fetchRepos()
+    console.log('hejsan')
+    console.log(this.props.location.state.currentUser.username)
 
   
   socket.on('notification', data => {
-          console.log(data)
+      console.log(data)
     })
   }
   getData() {
-    socket.emit("sendData")
+    let currentUser = this.props.location.state.currentUser.username
+    socket.emit("sendData", currentUser)
     socket.on("setSettings", data => {
       console.log(data, "from client")
       this.setState({ setting: data })
     })
   }
-
+  
   async fetchRepos() {
     try {
       const response = await fetch("/api/repos")

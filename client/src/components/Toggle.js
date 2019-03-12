@@ -31,11 +31,12 @@ this.getUser()
     const json = await response.json()
     console.log(json)
     this.setState({user: json.username})
+
     return json.username
   }
 
   checker() {
-    let isChecked 
+    let isChecked = false
     if (this.props.setting) {
       this.props.setting.forEach(element => {
         if (element.belongsTo === this.props.belongsTo) {

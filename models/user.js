@@ -6,8 +6,7 @@ const userSchema = new Schema({
   token: String,
   username: String,
   socketId: {
-    type: String,
-    required: true
+    type: String
   }
 })
 

@@ -1,16 +1,19 @@
 const settings = require("../models/hookSettings")
-
-module.exports = client => {
-  client.on("sendData", async () => {
+const User = require("../models/user")
+module.exports = (client, io) => {
+  client.on("sendData", async data => {
     try {
+      let currentUser = await User.findOne({ username: data })
       let result = await settings.find({})
       let arr = []
       result.forEach(element => {
-        console.log(element.bool)
-        arr.push({ bool: element.bool, belongsTo: element.belongsTo })
+          
+          console.log(element.currentUser)
+        if (element.currentUser === data) {
+          arr.push({ bool: element.bool, belongsTo: element.belongsTo })
+        }
       })
-      console.log(arr)
-      client.emit("setSettings", arr)
+      io.to(currentUser.socketId).emit("setSettings", arr)
     } catch (e) {
       console.log(e)
     }

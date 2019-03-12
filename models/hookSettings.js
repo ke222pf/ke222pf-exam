@@ -9,9 +9,12 @@ const NotificationSetting = new Schema({
   belongsTo: {
     type: String,
     required: true,
-    unique: true
   },
   hook: {
+    type: String,
+    required: true
+  },
+  currentUser: {
     type: String,
     required: true
   }

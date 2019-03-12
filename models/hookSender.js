@@ -2,15 +2,17 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const hook = new Schema({
-  id: {
+  idUser: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   login: {
     type: String,
-    required: true,
-    unique: true
+    required: true
+  },
+  hookId: {
+    type: String,
+    required: true
   }
 })
 
