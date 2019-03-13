@@ -6,14 +6,6 @@ import { Link } from "react-router-dom"
 export default class displayRepos extends Component {
   constructor(props) {
     super(props)
-    this._isMounted = false
-  }
-  componentDidMount() {
-    this._isMounted = true
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false
   }
   render() {
     return (

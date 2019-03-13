@@ -13,6 +13,10 @@ const hook = new Schema({
   hookId: {
     type: String,
     required: true
+  },
+  belongs: {
+      type: String,
+      require: true
   }
 })
 

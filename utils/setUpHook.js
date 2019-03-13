@@ -24,8 +24,8 @@ module.exports = async data => {
         await new hook({
           hookId: result.id,
           idUser: currentUser.githubId,
-          login: data.username
-          //   repoId: result.repository.id
+          login: data.username,
+          belongs: data.belongs
         }).save()
       }
     }

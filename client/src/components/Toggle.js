@@ -7,6 +7,7 @@ export default class Toggle extends Component {
       checked: this.checker(),
       user: ""
     }
+    // this.checker = this.checker.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
 componentDidMount() {

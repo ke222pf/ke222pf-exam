@@ -9,11 +9,12 @@ export default class notification extends Component {
       hookData: []
     }
     // this.renderData = this.render.bind(this)
+  }
+  componentDidMount() {
     socket.on("notification", data => {
-      console.log(data)
-      this.setState({ hookData: data })
-    })
-    console.log(this.state.hookData)
+        console.log(data)
+        this.setState({ hookData: data })
+      })
   }
 
   renderData() {

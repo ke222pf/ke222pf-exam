@@ -9,22 +9,31 @@ export default class repos extends Component {
     super(props)
     this.state = {
       repos: [],
-      endPoint: "/endPoint",
       setting: null
     }
+    this._isMounted = false
   }
   componentDidMount() {
-    this.getData()
+    this._isMounted = true
     this.fetchRepos()
+    this.getData()
     console.log("hejsan")
     console.log(this.props.name)
   }
-  getData() {
+
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+
+  async getData() {
+    console.log("getData function")
     let currentUser = this.props.name
     socket.emit("sendData", currentUser)
-    socket.on("setSettings", data => {
-      console.log(data, "from client")
-      this.setState({ setting: data })
+    await socket.on("setSettings", data => {
+      if (this._isMounted) {
+        console.log(data, "from client")
+        this.setState({ setting: data })
+      }
     })
   }
 
