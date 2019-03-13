@@ -91,7 +91,8 @@ module.exports = server => {
     let hookData = {
       id: req.body.sender.id,
       login: req.body.sender.login,
-      action: req.body.action
+      action: req.body.action,
+      repo: req.body.repository.name
     }
 
     let currentUser = await User.findOne({githubId: req.params.id})

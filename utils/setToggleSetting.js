@@ -12,10 +12,7 @@ module.exports = (client, io) => {
           arr.push({ bool: element.bool, belongsTo: element.belongsTo })
         }
       })
-      console.log('1')
       io.to(currentUser.socketId).emit("setSettings", arr)
-      console.log(arr)
-      console.log('2')
     } catch (e) {
       console.log(e)
     }

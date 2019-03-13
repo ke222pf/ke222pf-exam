@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { socketConnection } from "./socket"
-import { Collapsible, CollapsibleItem, Chip, Tag } from "react-materialize"
+import { Collapsible, CollapsibleItem, Button } from "react-materialize"
 const socket = socketConnection()
 export default class notification extends Component {
   constructor(props) {
@@ -8,30 +8,53 @@ export default class notification extends Component {
     this.state = {
       hookData: []
     }
+    this._isMounted = false
     // this.renderData = this.render.bind(this)
+    this.removeNotification = this.removeNotification.bind(this)
   }
   componentDidMount() {
+    this._isMounted = true
     socket.on("notification", data => {
-        console.log(data)
-        this.setState({ hookData: data })
+      console.log(data)
+      if (this._isMounted) {
+        this.setState({
+          hookData: [...this.state.hookData, data]
+        })
+        // this.setState(...this.state.hookData, data )
+      }
+    })
+  }
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+  removeNotification (index) {
+      this.state.hookData.splice(index, 1)
+      this.setState({
+        hookdata: this.state.hookData
       })
+      console.log(this.state.hookData)
   }
 
   renderData() {
     console.log("asdzs")
     console.log(this.state.hookData)
-    if (Object.entries(this.state.hookData).length > 0) {
+    if (this.state.hookData.length > 0) {
       console.log("hook!")
-      return (
-        <div>
-          <Collapsible>
-            <CollapsibleItem header='Third' icon='whatshot'>
-          <p>{this.state.hookData.action}</p>
-          <p>{this.state.hookData.login}</p>
-            </CollapsibleItem>
-          </Collapsible>
-        </div>
-      )
+      {
+        return this.state.hookData.map((item, index) => 
+            <li key={index}>
+
+              <Collapsible>
+              <Button onClick={() => this.removeNotification(index)}>Remove</Button>
+                <CollapsibleItem header="New Notification" icon="whatshot">
+                  <p className="info">action: {item.action}</p>
+                  <p className="info">from:{item.login}</p>
+                  <p className="info">repository: {item.repo}</p>
+                </CollapsibleItem>
+              </Collapsible>
+            </li>
+        )
+      }
     } else {
       console.log("no hook")
       return null
@@ -39,6 +62,6 @@ export default class notification extends Component {
   }
 
   render() {
-    return <div>{this.renderData()}</div>
+    return <ul><div>{this.renderData()}</div></ul>
   }
 }
