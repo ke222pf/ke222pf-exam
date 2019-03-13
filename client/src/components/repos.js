@@ -1,9 +1,8 @@
 import React, { Component } from "react"
 import Toggle from "./Toggle"
-import { Card, CardTitle, Col } from "react-materialize"
-import openSocket from "socket.io-client"
 import "../Notifications.css"
-const socket = openSocket("http://localhost:5000")
+import { socketConnection } from "./socket"
+const socket = socketConnection()
 
 export default class repos extends Component {
   constructor(props) {
@@ -19,10 +18,6 @@ export default class repos extends Component {
     this.fetchRepos()
     console.log("hejsan")
     console.log(this.props.name)
-
-    socket.on("notification", data => {
-      console.log(data)
-    })
   }
   getData() {
     let currentUser = this.props.name
@@ -42,7 +37,6 @@ export default class repos extends Component {
       console.log(e)
     }
   }
-
   render() {
     return (
       <div>
@@ -51,20 +45,19 @@ export default class repos extends Component {
             if (this.props.id === item.Organizations) {
               return (
                 <div key={index}>
-                <h3>{item.repo}</h3>
-                
-                      {item.admin ? (
-                        <Toggle
-                          hook={item.hook}
-                          belongsTo={item.repo}
-                          repo={item.repo}
-                          socketIo={socket}
-                          setting={this.state.setting}
-                        />
-                      ) : (
-                        <p>No promission allowed</p>
-                      )
-                    }
+                  <h3>{item.repo}</h3>
+
+                  {item.admin ? (
+                    <Toggle
+                      hook={item.hook}
+                      belongsTo={item.repo}
+                      repo={item.repo}
+                      socketIo={socket}
+                      setting={this.state.setting}
+                    />
+                  ) : (
+                    <p>No promission allowed</p>
+                  )}
                 </div>
               )
             }

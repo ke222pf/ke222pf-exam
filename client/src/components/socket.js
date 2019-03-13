@@ -1,6 +1,8 @@
-
-import React from 'react'
-
-const SocketContext = React.createContext()
-
-export default SocketContext
+import openSocket from "socket.io-client"
+let socket
+export const socketConnection = () => {
+    if (!socket) {
+    socket = openSocket("http://localhost:5000") 
+  }
+  return socket
+}

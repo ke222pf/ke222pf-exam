@@ -2,3 +2,12 @@
 .nav-wrapper {
     background-color: #0B3954;
 }
+
+.div-right {
+float: right;
+width: 50%;
+}
+.div-left {
+    float: left;
+    width: 50%;
+}

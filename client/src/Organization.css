@@ -2,3 +2,13 @@
     width: 10%;
     height: 10%;
 }
+div.col.s12.m7 {
+    width: 100%
+}
+/* li {
+    width: 50%;
+
+} */
+li {
+    width: 65%
+}
