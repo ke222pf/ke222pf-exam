@@ -1,6 +1,6 @@
 const settings = require("../models/hookSettings")
-const setUpHook = require("../utils/setUpHook")
-const removeHook = require("../utils/removeHook")
+const setUpHook = require("./setUpHook")
+const removeHook = require("./removeHook")
 module.exports = client => {
   client.on("boolean", async data => {
     let currentRepo = await settings.find({ belongsTo: data.belongs })

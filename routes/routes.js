@@ -72,7 +72,8 @@ module.exports = server => {
               Organizations: element.owner.id,
               commits: element.commits_url,
               hook: element.hooks_url,
-              admin: element.permissions.admin
+              admin: element.permissions.admin,
+              avatar: element.owner.avatar_url
             })
           })
         }

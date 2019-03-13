@@ -8,6 +8,7 @@ class organization extends Component {
     this.state = {
       orgs: []
     }
+
   }
   componentDidMount() {
     this.fetchOrgs()
@@ -21,6 +22,7 @@ class organization extends Component {
       console.log(e)
     }
   }
+
   render() {
     return (
       <div>

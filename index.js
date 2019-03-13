@@ -39,7 +39,7 @@ server.use(function (req, res, next) {
 })
 
 require("./routes/routes")(server)
-require("./utils/notificationSettings")(io)
+require("./utils/connectSocket")(io)
 
 
 

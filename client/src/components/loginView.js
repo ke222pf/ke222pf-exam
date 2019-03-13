@@ -14,9 +14,9 @@ const loginView = (props) => {
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
       />
-      <Navbar brand="logo" right>
+      <Navbar right>
         <NavItem onClick={() => console.log("test click")}>
-          Notification Settings
+         
         </NavItem>
         <NavItem href="/api/logout">Logout</NavItem>
       </Navbar>
