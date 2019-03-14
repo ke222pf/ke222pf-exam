@@ -12,7 +12,7 @@ module.exports = async data => {
       events: ["push", "issues"],
       config: {
         content_type: "json",
-        url: `https://65ae51da.ngrok.io/hook/${currentUser.githubId}`
+        url: `https://e6eae6ae.ngrok.io/hook/${currentUser.githubId}`
       }
     },
     async (err, result) => {
@@ -20,7 +20,7 @@ module.exports = async data => {
         console.log(err.body.errors)
       }
       if (result) {
-          console.log('updated hook')
+          console.log('updated hook', result)
         await new hook({
           hookId: result.id,
           idUser: currentUser.githubId,

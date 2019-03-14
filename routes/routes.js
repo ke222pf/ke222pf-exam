@@ -94,7 +94,8 @@ module.exports = server => {
       action: req.body.action,
       repo: req.body.repository.name
     }
-
+    console.log(new Date().toISOString())
+    console.log(hookData, 'hook data')
     let currentUser = await User.findOne({githubId: req.params.id})
     req.io.to(currentUser.socketId).emit("notification", hookData)
   }

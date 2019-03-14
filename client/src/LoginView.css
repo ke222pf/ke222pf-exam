@@ -5,12 +5,22 @@
 
 .div-right {
 float: right;
-width: 50%;
+width: 30%;
 }
 .div-left {
+    display: flex;
     float: left;
     width: 50%;
 }
 .info {
     color: #0B3954;
+}
+.middleDiv {
+float: right;
+width: 50%;
+}
+
+.middle {
+    float: right;
+    width: 35%;
 }

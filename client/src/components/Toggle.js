@@ -1,61 +1,55 @@
 import React, { Component } from "react"
-
+import { toggelData } from "./toggelData"
 export default class Toggle extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      checked: this.checker(),
-      user: ""
+      bool: this.checker()
     }
-    // this.checker = this.checker.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    console.log("asd")
   }
-componentDidMount() {
-this.getUser()
-}
- handleChange() {
-    this.setState({
-      checked: !this.state.checked
-    })
-    console.log(this.props.belongsTo, !this.state.checked)
 
+  handleChange() {
+    this.setState({
+      bool: !this.state.bool
+    })
+    console.log(!this.state.setting)
+    console.log(this.props.belongsTo, !this.state.bool)
+    console.log("nu körs vi")
     this.props.socketIo.emit("boolean", {
-      boolean: !this.state.checked,
+      boolean: !this.state.bool,
       belongs: this.props.repo,
       hook: this.props.hook,
-      username: this.state.user
+      username: this.props.user
     })
-  }
-  async getUser() {
-    const response = await fetch("/api/currentUser")
-    const json = await response.json()
-    console.log(json)
-    this.setState({user: json.username})
-
-    return json.username
   }
 
   checker() {
-    let isChecked = false
-    if (this.props.setting) {
-      this.props.setting.forEach(element => {
-        if (element.belongsTo === this.props.belongsTo) {
-          console.log("hejsan")
-          isChecked = element.bool
-        }
-      })
-      console.log(isChecked, "is checked")
-      return isChecked
-    }
+    toggelData(this.props.socketIo, this.props.user, settings => {
+      console.log(settings)
+      
+      let isChecked = false
+      if (settings.length) {
+        settings.forEach(element => {
+          if (element.belongsTo === this.props.belongsTo) {
+            isChecked = element.bool
+          }
+        })
+      }
+      this.setState(() => ({ bool: isChecked }))
+    })
   }
+  
   render() {
     return (
       <div>
         <label className="switch">
+     {console.log(this.state.bool)}
           <input
             type="checkbox"
-            defaultChecked={this.checker()}
-            onChange={this.handleChange}
+            defaultChecked={this.state.bool}
+            onClick={this.handleChange}
           />
           <span className="slider round" />
         </label>
