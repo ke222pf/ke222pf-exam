@@ -22,8 +22,21 @@ width: 50%;
 
 .middle {
     float: right;
-    width: 35%;
+    width: 65%;
 }
 ul #sidenav_0 {
     background-color: #0B3954;
+}
+.username {
+    margin-top: 2%;
+}
+i.material-icons {
+    margin:0px 0px -30px 0px
+}
+.wrapper {
+    margin-top: 40%;
+}
+div.card-content:hover {
+    box-shadow: 1px 8px 20px grey;
+    -webkit-transition:  box-shadow .6s ease-in;
 }

@@ -6,6 +6,7 @@ const passport = require("passport")
 const client = require("../utils/authGithub")
 const moment = require("moment")
 const nodeMailer = require('../config/nodeMailer')
+const setIfUserWantsMail = require('../utils/setIfUserWantMail')
 moment.locale("sv")
 
 module.exports = server => {
@@ -45,6 +46,7 @@ module.exports = server => {
   server.get("/api/orgs", async (req, res, next) => {
     try {
       let githubUser = await client(req.user.token)
+      setIfUserWantsMail(req.io, req.user.username)
       let container = []
      githubUser.get(`/user/orgs`, (err, status, body, headers) => {
         if (body) {
@@ -101,7 +103,7 @@ module.exports = server => {
         let hookData = {
           id: req.body.sender.id,
           login: req.body.sender.login,
-          action: req.body.action,
+          action: req.headers["x-github-event"] + ' ' + req.body.action || 'commits',
           repo: req.body.repository.name,
           time: timeStamp
         }
@@ -117,7 +119,7 @@ module.exports = server => {
         repo: req.body.repository.name,
         time: timeStamp
       }
-      nodeMailer(currentUser.mail, JSON.stringify(hookData))
+      nodeMailer(currentUser.mail, hookData)
       console.log("Socket not connected");
     }
     })

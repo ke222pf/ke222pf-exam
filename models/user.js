@@ -10,7 +10,8 @@ const userSchema = new Schema({
   },
   mail: {
     type: String
-  }
+  },
+  Notifications: []
 })
 
 const User = mongoose.model("user", userSchema)

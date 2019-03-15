@@ -16,7 +16,7 @@ export default class Toggle extends Component {
     })
     console.log(!this.state.setting)
     console.log(this.props.belongsTo, !this.state.bool)
-    console.log("nu körs vi")
+    console.log(this.props.user)
     this.props.socketIo.emit("boolean", {
       boolean: !this.state.bool,
       belongs: this.props.repo,
@@ -44,6 +44,7 @@ export default class Toggle extends Component {
   render() {
     return (
       <div>
+     <p>Set up Hook</p>
         <label className="switch">
      {console.log(this.state.bool)}
           <input

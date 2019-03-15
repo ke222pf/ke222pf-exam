@@ -4,19 +4,24 @@ const removeHook = require("./removeHook")
 const User = require("../models/user")
 module.exports = client => {
   client.on("boolean", async data => {
-    let currentRepo = await settings.find({ belongsTo: data.belongs })
-    if(currentRepo.length >= 1) {
-    
-      currentRepo.forEach(async element => {
-        if(element.belongsTo === data.belongs) {
+    let found = false
+    console.log(data, 'this is data')
+    let currentRepos = await settings.find({ belongsTo: data.belongs })
+    console.log(currentRepos, 'this is')
+    if(currentRepos.length >= 1) {
+      currentRepos.forEach(async element => {
+        console.log(element, 'nu kör vi')
+        if(element.currentUser === data.username) {
+          found = true
           console.log('update')
-          await settings.findOneAndUpdate(
-            { belongsTo: data.belongs },
+          await settings.findByIdAndUpdate(
+             (element.id),
             { $set: { bool: data.boolean } }
             )
           }
         })
-      } else {
+      }
+      if(!found) {
         console.log('add')
           new settings({
             bool: data.boolean,
@@ -24,7 +29,7 @@ module.exports = client => {
             hook: data.hook,
             currentUser: data.username
           }).save()
-      }
+      } 
 
     if (data.boolean === true) {
       setUpHook(data)
@@ -32,9 +37,13 @@ module.exports = client => {
     } else {
       removeHook(data)
     }
-  })
+  })  
       client.on('email', async mail => {
        await User.findOneAndUpdate({username: mail.user}, {$set:{mail: mail.mail}})
         console.log(mail.user)
+      })
+      client.on('removeEmail', async (user) => {
+        await User.findOneAndUpdate({username: user}, {$set:{mail: "NoEmail"}})
+        console.log('reset email')
       })
 }

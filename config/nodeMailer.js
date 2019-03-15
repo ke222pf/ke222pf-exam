@@ -1,6 +1,9 @@
 const nodemailer = require('nodemailer')
+const mailPayload = require('../config/MailPayload')
 module.exports = async (mail, msg) => {
+
     require('dotenv').config()
+    console.log(msg)
 
     var transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -16,7 +19,7 @@ module.exports = async (mail, msg) => {
     to: mail, 
     subject: "Notification ✔", 
     text: "Hello world?", 
-    html: `<p>${msg}</p>` 
+    html: `${mailPayload(msg)}` 
   }
 
   let info = await transporter.sendMail(mailOptions)

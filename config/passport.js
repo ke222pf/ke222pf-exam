@@ -33,14 +33,13 @@ passport.use(
           if (currentUser) {
           
 
-            console.log(profile)
             return done(null, currentUser)
           } else {
             new User({
               githubId: profile.id,
               token: accessToken,
               username: profile.username,
-              mail: ""
+              mail: "NoEmail"
             })
               .save()
               .then(newUser => {

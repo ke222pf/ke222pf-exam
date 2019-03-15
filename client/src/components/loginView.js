@@ -12,6 +12,7 @@ import {
 import Organizations from "./Organization"
 import "../LoginView.css"
 import Notification from "./notification"
+import { checkMail } from "./checkEmail"
 import openSocket from "socket.io-client"
 const socketIo = openSocket("http://localhost:5000")
 
@@ -20,21 +21,41 @@ export default class loginView extends Component {
     super(props)
     this.state = {
       hookData: [],
-      email: ""
+      email: "",
+      toggel: true,
+      haveMail: ""
     }
     this.handleChange = this.handleChange.bind(this)
     this.keyPress = this.keyPress.bind(this)
   }
+  componentDidMount() {
+    this.checkifUserHaveInputMail()
 
+  }
   handleChange(e) {
     this.setState({
       email: e.target.value
   })
   }
 
+  checkifUserHaveInputMail () {
+    checkMail(socketIo, setting => {
+      this.setState({haveMail: setting})
+      console.log(setting)
+    })
+  }
+
   keyPress(e) {
-    let payLoad = {mail: this.state.email, user: this.props.currentUser.username}
+    if(this.state.haveMail === "NoEmail") {
+      this.setState({haveMail: e.target.value})
+      console.log(this.state.haveMail)
+      let payLoad = {mail: this.state.email, user: this.props.currentUser.username}
       socketIo.emit("email", payLoad)
+    } else {
+      socketIo.emit('removeEmail', this.props.currentUser.username)
+      this.setState({haveMail: "NoEmail"})
+      console.log('remove')
+    }
     console.log("asd")
   }
 
@@ -42,7 +63,7 @@ export default class loginView extends Component {
     return (
       <React.Fragment>
         <Navbar right>
-          <NavItem onClick={() => console.log("test click")} />
+
           <NavItem href="/api/logout">Logout</NavItem>
           <SideNav
             trigger={<Button>Fill in Email for Notification</Button>}
@@ -51,16 +72,19 @@ export default class loginView extends Component {
             <SideNavItem
               userView
               user={{
-                background: "img/office.jpg",
-                image: "img/yuna.jpg",
-                name: this.props.currentUser.username
+                img: <Icon>account_circle</Icon>,
               }}
             />
+            <p className="wrapper">
+            <h3>Github Dashboard</h3>
+            <Icon>account_circle</Icon>
+            <p className="username">{this.props.currentUser.username}</p>
+            </p>
+            {this.state.haveMail === "NoEmail" || "" ?
+            <div>
               <input
                 type="text"
-                onChange={this.handleChange}
-              />
-              <Button onClick={this.keyPress}> Accept </Button>
+                onChange={this.handleChange}/> <Button onClick={this.keyPress}> Accept</Button></div> : <p>{this.state.email}<Button onClick={this.keyPress}>Remove my Email</Button></p>}
           </SideNav>
         </Navbar>
         <div className="div-left">
