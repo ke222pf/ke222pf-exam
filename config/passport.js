@@ -33,12 +33,14 @@ passport.use(
           if (currentUser) {
           
 
+            console.log(profile)
             return done(null, currentUser)
           } else {
             new User({
               githubId: profile.id,
-              token: "",
-              username: profile.username
+              token: accessToken,
+              username: profile.username,
+              mail: ""
             })
               .save()
               .then(newUser => {
@@ -50,7 +52,12 @@ passport.use(
         await User.findOneAndUpdate(
           { githubId: profile.id },
           { $set: { token: accessToken } }
-        )
+        , (err, result) => {
+          if(err) {
+            console.log(err)
+          }
+        })
+        console.log('körs den?')
       } catch (e) {
         console.log("NOT ALLOWED", e)
       }

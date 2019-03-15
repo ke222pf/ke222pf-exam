@@ -1,6 +1,7 @@
 const settings = require("../models/hookSettings")
 const setUpHook = require("./setUpHook")
 const removeHook = require("./removeHook")
+const User = require("../models/user")
 module.exports = client => {
   client.on("boolean", async data => {
     let currentRepo = await settings.find({ belongsTo: data.belongs })
@@ -32,4 +33,8 @@ module.exports = client => {
       removeHook(data)
     }
   })
+      client.on('email', async mail => {
+       await User.findOneAndUpdate({username: mail.user}, {$set:{mail: mail.mail}})
+        console.log(mail.user)
+      })
 }

@@ -13,13 +13,14 @@ export default class notification extends Component {
     this.removeNotification = this.removeNotification.bind(this)
   }
   componentDidMount() {
-
     this._isMounted = true
     this.props.socket.on("notification", data => {
-      console.log(data)
+      console.log('notfication data:', data)
+      console.log('hook data:', this.state.hookData)
+
       if (this._isMounted) {
         this.setState({
-          hookData: [...this.state.hookData, data]
+          hookData: this.state.hookData.concat(data)
         })
       }
     })
@@ -45,10 +46,12 @@ export default class notification extends Component {
             <li key={index}>
               <Collapsible>
               <Button onClick={() => this.removeNotification(index)}>Remove</Button>
-                <CollapsibleItem header="New Notification" icon="whatshot">
+                <CollapsibleItem header="New Notification " icon="whatshot">
+                 
+                <p>{item.time}</p>
+                  <p className="info">repository: {item.repo}</p>
                   <p className="info">action: {item.action}</p>
                   <p className="info">from:{item.login}</p>
-                  <p className="info">repository: {item.repo}</p>
                 </CollapsibleItem>
               </Collapsible>
             </li>

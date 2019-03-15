@@ -31,7 +31,9 @@ server.use(
   
   
   server.use(cookieParser())
-let io = require('socket.io')(server.server)
+let io = require('socket.io')(server, {
+  pingTimeout: 60000
+})
 
 server.use(function (req, res, next) {
   req.io = io

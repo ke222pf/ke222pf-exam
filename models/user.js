@@ -7,6 +7,9 @@ const userSchema = new Schema({
   username: String,
   socketId: {
     type: String
+  },
+  mail: {
+    type: String
   }
 })
 

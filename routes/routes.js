@@ -4,6 +4,9 @@ const User = require("../models/user")
 require("dotenv").config()
 const passport = require("passport")
 const client = require("../utils/authGithub")
+const moment = require("moment")
+const nodeMailer = require('../config/nodeMailer')
+moment.locale("sv")
 
 module.exports = server => {
   server.get(
@@ -14,13 +17,17 @@ module.exports = server => {
   )
   server.get("/api/currentUser", async (req, res, next) => {
     req.user.io = req.cookies.io
-    await User.findOneAndUpdate({username: req.user.username}, {$set: {socketId: req.user.io}})
-
-
-    res.json(req.user)
+    await User.findOneAndUpdate(
+      { username: req.user.username },
+      { $set: { socketId: req.user.io } }
+    )
+    let auth = {
+      username: req.user.username
+    }
+    res.json(auth)
     next
   })
-  
+
   server.get(
     "/login/callback",
     passport.authenticate("github"),
@@ -28,18 +35,18 @@ module.exports = server => {
       // rendera klient sida
       res.redirect("http://localhost:3000/login", next)
     }
-    )
-    
-    server.get("/api/logout", (req, res, next) => {
-      req.logout()
-      res.redirect("http://localhost:3000/", next)
-    })
-    
-    server.get("/api/orgs", async (req, res, next) => {
+  )
+
+  server.get("/api/logout", (req, res, next) => {
+    req.logout()
+    res.redirect("http://localhost:3000/", next)
+  })
+
+  server.get("/api/orgs", async (req, res, next) => {
     try {
-      let githubUser = client(req.user.token)
+      let githubUser = await client(req.user.token)
       let container = []
-      githubUser.get(`/user/orgs`, (err, status, body, headers) => {
+     githubUser.get(`/user/orgs`, (err, status, body, headers) => {
         if (body) {
           body.forEach(element => {
             container.push({
@@ -85,20 +92,33 @@ module.exports = server => {
   })
 
   server.post("/hook/:id", async (req, res) => {
-
-    let user = await hook.findOne({idUser: req.params.id})
-    if(user) {
-    let hookData = {
-      id: req.body.sender.id,
-      login: req.body.sender.login,
-      action: req.body.action,
-      repo: req.body.repository.name
+    let user = await hook.findOne({ idUser: req.params.id })
+    let timeStamp = moment().format("YYYY-MM-DD LTS")
+    let currentUser = await User.findOne({ githubId: req.params.id })
+    if(req.io.sockets.sockets[currentUser.socketId] !== undefined){
+      console.log('open'); 
+      if (user) {
+        let hookData = {
+          id: req.body.sender.id,
+          login: req.body.sender.login,
+          action: req.body.action,
+          repo: req.body.repository.name,
+          time: timeStamp
+        }
+        // console.log(d)
+        console.log(hookData, "hook data") 
+        req.io.to(currentUser.socketId).emit("notification", hookData)
+      }
+      res.send(200)
+    } else {
+      let hookData = {
+        login: req.body.sender.login,
+        action: req.body.action,
+        repo: req.body.repository.name,
+        time: timeStamp
+      }
+      nodeMailer(currentUser.mail, JSON.stringify(hookData))
+      console.log("Socket not connected");
     }
-    console.log(new Date().toISOString())
-    console.log(hookData, 'hook data')
-    let currentUser = await User.findOne({githubId: req.params.id})
-    req.io.to(currentUser.socketId).emit("notification", hookData)
-  }
-    res.send(200)
-  })
+    })
 }
