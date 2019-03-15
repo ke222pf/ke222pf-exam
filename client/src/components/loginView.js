@@ -29,6 +29,7 @@ export default class loginView extends Component {
     this.keyPress = this.keyPress.bind(this)
   }
   componentDidMount() {
+    console.log(this.props.currentUser.username)
     this.checkifUserHaveInputMail()
 
   }
@@ -62,8 +63,7 @@ export default class loginView extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar right>
-
+        <Navbar brand="Github Dashboard" right>
           <NavItem href="/api/logout">Logout</NavItem>
           <SideNav
             trigger={<Button>Fill in Email for Notification</Button>}
@@ -84,7 +84,7 @@ export default class loginView extends Component {
             <div>
               <input
                 type="text"
-                onChange={this.handleChange}/> <Button onClick={this.keyPress}> Accept</Button></div> : <p>{this.state.email}<Button onClick={this.keyPress}>Remove my Email</Button></p>}
+                onChange={this.handleChange}/> <Button onClick={this.keyPress}> Accept</Button></div> : <p>{this.state.haveMail !== "" ? this.state.haveMail : this.state.email}<Button onClick={this.keyPress}>Remove my Email</Button></p>}
           </SideNav>
         </Navbar>
         <div className="div-left">

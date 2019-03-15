@@ -46,7 +46,6 @@ export default class Toggle extends Component {
       <div>
      <p>Set up Hook</p>
         <label className="switch">
-     {console.log(this.state.bool)}
           <input
             type="checkbox"
             defaultChecked={this.state.bool}

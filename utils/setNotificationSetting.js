@@ -5,12 +5,9 @@ const User = require("../models/user")
 module.exports = client => {
   client.on("boolean", async data => {
     let found = false
-    console.log(data, 'this is data')
     let currentRepos = await settings.find({ belongsTo: data.belongs })
-    console.log(currentRepos, 'this is')
     if(currentRepos.length >= 1) {
       currentRepos.forEach(async element => {
-        console.log(element, 'nu kör vi')
         if(element.currentUser === data.username) {
           found = true
           console.log('update')

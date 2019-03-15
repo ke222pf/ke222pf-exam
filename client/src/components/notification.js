@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, Fragment } from "react"
 
 import { Collapsible, CollapsibleItem, Button } from "react-materialize"
 
@@ -6,17 +6,16 @@ export default class notification extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      hookData: []
+      hookData: [],
+      firstTime: false
     }
     this._isMounted = false
-    // this.renderData = this.render.bind(this)
     this.removeNotification = this.removeNotification.bind(this)
   }
   componentDidMount() {
     this._isMounted = true
+    this.fetchUnreadNotification()
     this.props.socket.on("notification", data => {
-      console.log('notfication data:', data)
-      console.log('hook data:', this.state.hookData)
 
       if (this._isMounted) {
         this.setState({
@@ -33,20 +32,28 @@ export default class notification extends Component {
       this.setState({
         hookdata: this.state.hookData
       })
+      this.setState({firstTime: false})
       console.log(this.state.hookData)
   }
 
+  async fetchUnreadNotification () {
+    const response = await fetch("/api/getNotifications")
+      const json = await response.json()
+      this.setState({
+        hookData: this.state.hookData.concat(json)
+      })
+      this.setState({firstTime: true})
+      console.log(this.state.unReadNotification)
+  }
+
   renderData() {
-    console.log("asdzs")
     console.log(this.state.hookData)
     if (this.state.hookData.length > 0) {
-      console.log("hook!")
-      {
         return this.state.hookData.map((item, index) => 
-            <li key={index}>
+        <li key={index}>
               <Collapsible>
               <Button onClick={() => this.removeNotification(index)}>Remove</Button>
-                <CollapsibleItem header="New Notification " icon="whatshot">
+                <CollapsibleItem header={item.sinceLastTime  === false ? "Since last time": "New Notification"} icon="whatshot">
                  
                 <p>{item.time}</p>
                   <p className="info">repository: {item.repo}</p>
@@ -56,7 +63,6 @@ export default class notification extends Component {
               </Collapsible>
             </li>
         )
-      }
     } else {
       console.log("no hook")
       return null
@@ -64,6 +70,6 @@ export default class notification extends Component {
   }
 
   render() {
-    return <ul><div>{this.renderData()}</div></ul>
+    return  <Fragment><ul><div>{this.renderData()}</div></ul></Fragment>
   }
 }

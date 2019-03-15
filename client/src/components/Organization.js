@@ -52,7 +52,7 @@ class organization extends Component {
         return (
           <div key={index}>
             <Collection>
-              <CollectionItem>{value.repo}</CollectionItem>
+              <CollectionItem><b>{value.repo}</b></CollectionItem>
             {/* <h3>{value.repo}</h3> */}
 
               <CollectionItem>
@@ -65,7 +65,7 @@ class organization extends Component {
               user={this.props.currentUser.username}
               />
               ) : (
-                <p>No promission allowed</p>
+                <p>No promission allowed!</p>
                 )}
                 </CollectionItem>
                 </Collection>
@@ -86,7 +86,7 @@ class organization extends Component {
   render() {
     return (
       <Fragment>
-        <div>
+        <div className="orgs">
           <ul>
             {this.state.orgs.map((item, index) => {
               return (

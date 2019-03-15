@@ -23,6 +23,7 @@ width: 50%;
 .middle {
     float: right;
     width: 65%;
+    padding-top: 20px;
 }
 ul #sidenav_0 {
     background-color: #0B3954;
@@ -39,4 +40,12 @@ i.material-icons {
 div.card-content:hover {
     box-shadow: 1px 8px 20px grey;
     -webkit-transition:  box-shadow .6s ease-in;
+}
+ul.collection {
+    width: 100%;
+    border-color: #26a69a;
+    border-width: 1px
+}
+.orgs {
+    padding-left: 15px;
 }

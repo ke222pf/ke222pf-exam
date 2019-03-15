@@ -5,10 +5,10 @@ require("dotenv").config()
 const passport = require("passport")
 const client = require("../utils/authGithub")
 const moment = require("moment")
-const nodeMailer = require('../config/nodeMailer')
-const setIfUserWantsMail = require('../utils/setIfUserWantMail')
+const nodeMailer = require("../config/nodeMailer")
+const setIfUserWantsMail = require("../utils/setIfUserWantMail")
 moment.locale("sv")
-
+ 
 module.exports = server => {
   server.get(
     "/api/login/github",
@@ -48,7 +48,7 @@ module.exports = server => {
       let githubUser = await client(req.user.token)
       setIfUserWantsMail(req.io, req.user.username)
       let container = []
-     githubUser.get(`/user/orgs`, (err, status, body, headers) => {
+      githubUser.get(`/user/orgs`, (err, status, body, headers) => {
         if (body) {
           body.forEach(element => {
             container.push({
@@ -97,30 +97,53 @@ module.exports = server => {
     let user = await hook.findOne({ idUser: req.params.id })
     let timeStamp = moment().format("YYYY-MM-DD LTS")
     let currentUser = await User.findOne({ githubId: req.params.id })
-    if(req.io.sockets.sockets[currentUser.socketId] !== undefined){
-      console.log('open'); 
+    if (req.io.sockets.sockets[currentUser.socketId] !== undefined) {
+      console.log("open")
       if (user) {
         let hookData = {
           id: req.body.sender.id,
           login: req.body.sender.login,
-          action: req.headers["x-github-event"] + ' ' + req.body.action || 'commits',
+          action:
+            req.headers["x-github-event"] + " " + req.body.action || "commits",
           repo: req.body.repository.name,
           time: timeStamp
         }
         // console.log(d)
-        console.log(hookData, "hook data") 
+        console.log(hookData, "hook data")
         req.io.to(currentUser.socketId).emit("notification", hookData)
       }
       res.send(200)
     } else {
       let hookData = {
         login: req.body.sender.login,
-        action: req.body.action,
+        action:
+            req.headers["x-github-event"] + " " + req.body.action || "commits",
         repo: req.body.repository.name,
-        time: timeStamp
+        time: timeStamp,
+        sinceLastTime: false
       }
+      console.log(currentUser.id)
+      await User.findByIdAndUpdate(
+        currentUser.id,
+        { $push: { Notifications: hookData } },
+        { upsert: true, new: true }
+      )
       nodeMailer(currentUser.mail, hookData)
-      console.log("Socket not connected");
+      console.log("Socket not connected")
     }
+  })
+
+  server.get("/api/getNotifications", async (req, res, next) => {
+    console.log(req.user.username, "this is the user")
+    let currentUser = await User.findOne({ username: req.user.username })
+    let arr = []
+    currentUser.Notifications.forEach(element => {
+      arr.push(element)
     })
+    arr.flat()
+    res.json(arr)
+    await User.findByIdAndUpdate(currentUser.id, {
+      $set: { Notifications: [] }
+    })
+  })
 }
