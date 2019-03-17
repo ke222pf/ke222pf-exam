@@ -18,23 +18,23 @@ server.use(restify.plugins.bodyParser({ requestBodyOnGet: true }))
 server.use(restify.plugins.queryParser())
 var csp = require("helmet-csp")
 
-server.use(
-  csp({
-    directives: {
-      defaultSrc: ["'self'", "default.com"],
-      scriptSrc: ["'self'", "code.jquery.com"],
-      styleSrc: ["'self'"],
-      imgSrc: ["'self'"],
-      connectSrc: ["'self'", "wss//57242057.ngrok.io"],
-      fontSrc: ["font.com"],
-      objectSrc: ["object.com"],
-      mediaSrc: ["media.com"],
-      frameSrc: ["frame.com"],
-      sandbox: ["allow-forms", "allow-scripts"],
-      reportUri: "/report-violation"
-    }
-  })
-)
+// server.use(
+//   csp({
+//     directives: {
+//       defaultSrc: ["'self'", "default.com"],
+//       scriptSrc: ["'self'", "code.jquery.com"],
+//       styleSrc: ["'self'"],
+//       imgSrc: ["'self'"],
+//       connectSrc: ["'self'", "wss//57242057.ngrok.io"],
+//       fontSrc: ["font.com"],
+//       objectSrc: ["object.com"],
+//       mediaSrc: ["media.com"],
+//       frameSrc: ["frame.com"],
+//       sandbox: ["allow-forms", "allow-scripts"],
+//       reportUri: "/report-violation"
+//     }
+//   })
+// )
 
 server.use(
   cookieSession({
