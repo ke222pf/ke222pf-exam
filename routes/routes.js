@@ -34,13 +34,13 @@ module.exports = server => {
     passport.authenticate("github"),
     (req, res, next) => {
       // rendera klient sida
-      res.redirect("http://localhost:3000/login", next)
+      res.redirect("https://examination1dv612.herokuapp.com//login", next)
     }
   )
 
   server.get("/api/logout", (req, res, next) => {
     req.logout()
-    res.redirect("http://localhost:3000/", next)
+    res.redirect("https://examination1dv612.herokuapp.com/", next)
   })
 
   server.get("/api/orgs", async (req, res, next) => {
@@ -116,7 +116,6 @@ module.exports = server => {
           repo: req.body.repository.name,
           time: timeStamp
         }
-        // console.log(d)
         console.log(hookData, "hook data")
         req.io.to(currentUser.socketId).emit("notification", hookData)
       }
