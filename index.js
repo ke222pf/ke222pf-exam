@@ -2,8 +2,6 @@ const restify = require("restify")
 const mongoose = require("./config/mongoose")
 const passport = require("passport")
 const cookieSession = require("cookie-session")
-// const settings = require("./utils/notificationSettings")
-const settings = require("./models/hookSettings")
 var cookieParser = require("cookie-parser")
 require("dotenv").config()
 const PORT = process.env.PORT || 5000
@@ -58,12 +56,10 @@ server.use(function(req, res, next) {
   next()
 })
 
-server.get(
-  /\/docs\/public\/?.*/,
-  restify.plugins.serveStatic({
-    directory: "./client/build"
-  })
-)
+server.get('/*', restify.plugins.serveStatic({
+  directory: './client/build/',
+  default: 'index.html'
+}))
 
 require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
