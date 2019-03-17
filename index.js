@@ -60,7 +60,7 @@ server.use(function(req, res, next) {
 
 server.get(
   /\/docs\/public\/?.*/,
-  restify.serveStatic({
+  server.serveStatic({
     directory: "./client/build"
   })
 )
