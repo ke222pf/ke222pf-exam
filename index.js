@@ -36,12 +36,12 @@ server.use(function(req, res, next) {
   req.io = io
   next()
 })
-const path = require('path')
+
 server.get('/*', restify.plugins.serveStatic({
   directory: './client/build/',
-  default: "index.html"
+  file: "index.html",
+  appendRequestPath: false,
 }))
-path.join(__dirname, 'client', 'build', 'index.html')
 
 require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
