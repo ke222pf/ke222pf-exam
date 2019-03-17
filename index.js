@@ -12,10 +12,7 @@ mongoose()
 const server = restify.createServer({
   socketio: true
 })
-server.get('/', restify.plugins.serveStatic({
-  directory: './client/build',
-  default: "index.html"
-}))
+
 server.use(restify.plugins.bodyParser({ requestBodyOnGet: true }))
 
 server.use(restify.plugins.queryParser())
@@ -40,6 +37,10 @@ server.use(function(req, res, next) {
   next()
 })
 
+server.get('/', restify.plugins.serveStatic({
+  directory: './client/build',
+  default: "index.html"
+}))
 
 require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
