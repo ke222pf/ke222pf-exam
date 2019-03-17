@@ -12,13 +12,21 @@ export default class Toggle extends Component {
 
   handleChange() {
     this.setState({
-      bool: !this.state.bool
+      bool: !this.state.bool,
     })
     console.log(!this.state.setting)
     console.log(this.props.belongsTo, !this.state.bool)
     console.log(this.props.user)
     this.props.socketIo.emit("boolean", {
+      belongs: this.props.repo,
       boolean: !this.state.bool,
+      hook: this.props.hook,
+      username: this.props.user
+    })
+
+    this.props.socketIo.emit("hookSettings", {
+      boolean: !this.state.bool,
+      hook: this.props.hook,
       belongs: this.props.repo,
       hook: this.props.hook,
       username: this.props.user
@@ -28,7 +36,7 @@ export default class Toggle extends Component {
   checker() {
     toggelData(this.props.socketIo, this.props.user, settings => {
       console.log(settings)
-      
+
       let isChecked = false
       if (settings.length) {
         settings.forEach(element => {
@@ -40,11 +48,11 @@ export default class Toggle extends Component {
       this.setState(() => ({ bool: isChecked }))
     })
   }
-  
+
   render() {
     return (
       <div>
-     <p>Set up Hook</p>
+        <p>Set up Hook</p>
         <label className="switch">
           <input
             type="checkbox"

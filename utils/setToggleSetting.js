@@ -8,7 +8,6 @@ module.exports = (client, io) => {
       let result = await settings.find({})
       let arr = []
       result.forEach(element => {
-          // console.log(element.currentUser,'this is a user')
         if (element.currentUser === data) {
           arr.push({ bool: element.bool, belongsTo: element.belongsTo })
         }

@@ -98,8 +98,16 @@ module.exports = server => {
     let timeStamp = moment().format("YYYY-MM-DD LTS")
     let currentUser = await User.findOne({ githubId: req.params.id })
     if (req.io.sockets.sockets[currentUser.socketId] !== undefined) {
-      console.log("open")
-      if (user) {
+      console.log(req.body.zen)
+      if(req.body.zen) {
+        console.log('subscribed to a hook!')
+        let hookData = {
+          repo: req.body.repository.name,
+          login: req.body.sender.login,
+          subscribed: true
+        }
+        req.io.to(currentUser.socketId).emit("notification", hookData)
+      } else if (user) {
         let hookData = {
           id: req.body.sender.id,
           login: req.body.sender.login,

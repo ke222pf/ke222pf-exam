@@ -63,18 +63,18 @@ export default class loginView extends Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar brand="Github Dashboard" right>
+        <Navbar right>
           <NavItem href="/api/logout">Logout</NavItem>
           <SideNav
             trigger={<Button>Fill in Email for Notification</Button>}
             options={{ closeOnClick: true }}
-          >
+            >
             <SideNavItem
               userView
               user={{
                 img: <Icon>account_circle</Icon>,
               }}
-            />
+              />
             <p className="wrapper">
             <h3>Github Dashboard</h3>
             <Icon>account_circle</Icon>

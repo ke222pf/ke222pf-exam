@@ -49,3 +49,7 @@ ul.collection {
 .orgs {
     padding-left: 15px;
 }
+
+.right.hide-on-med-and-down li a {
+    margin-left: 200px;
+}

@@ -51,19 +51,29 @@ export default class notification extends Component {
     if (this.state.hookData.length > 0) {
         return this.state.hookData.map((item, index) => 
         <li key={index}>
+        {!item.subscribed ? 
               <Collapsible>
-              <Button onClick={() => this.removeNotification(index)}>Remove</Button>
-                <CollapsibleItem header={item.sinceLastTime  === false ? "Since last time": "New Notification"} icon="whatshot">
-                 
+                <Button onClick={() => this.removeNotification(index)}>Remove</Button>
+              <CollapsibleItem header={item.sinceLastTime  === false ? "Since last time": "New Notification"} icon="whatshot">
                 <p>{item.time}</p>
                   <p className="info">repository: {item.repo}</p>
                   <p className="info">action: {item.action}</p>
                   <p className="info">from:{item.login}</p>
                 </CollapsibleItem>
               </Collapsible>
+            :
+             <Collapsible>
+              <Button onClick={() => this.removeNotification(index)}>Remove</Button>
+              <CollapsibleItem header={'New Subscribtion'} icon="whatshot">
+                <p>{item.time}</p>
+                <p className="info">repository: {item.repo}</p>
+                <p className="info">{item.login}</p>
+              </CollapsibleItem>
+            </Collapsible>
+             }
             </li>
         )
-    } else {
+      } else {
       console.log("no hook")
       return null
     }

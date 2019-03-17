@@ -4,7 +4,7 @@ const authClinet = require("../utils/githubHook")
 module.exports = async data => {
   let currentUser = await User.findOne({ username: data.username })
   let githubUser = authClinet(data.hook, data.belongs, currentUser.token)
-  let getHook = await hook.findOne({ login: data.username })
+
   githubUser.hook(
     {
       name: "web",
@@ -12,7 +12,7 @@ module.exports = async data => {
       events: ["push", "issues"],
       config: {
         content_type: "json",
-        url: ` https://136019dd.ngrok.io/hook/${currentUser.githubId}`
+        url: `https://7b35f708.ngrok.io/hook/${currentUser.githubId}`
       }
     },
     async (err, result) => {
@@ -20,7 +20,7 @@ module.exports = async data => {
         console.log(err.body.errors)
       }
       if (result) {
-          console.log('updated hook', result)
+          console.log('updated hook')
         await new hook({
           hookId: result.id,
           idUser: currentUser.githubId,

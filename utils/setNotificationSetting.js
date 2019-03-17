@@ -1,46 +1,55 @@
 const settings = require("../models/hookSettings")
 const setUpHook = require("./setUpHook")
 const removeHook = require("./removeHook")
+// const User = require("../models/user")
 const User = require("../models/user")
-module.exports = client => {
+module.exports = async client => {
   client.on("boolean", async data => {
     let found = false
     let currentRepos = await settings.find({ belongsTo: data.belongs })
-    if(currentRepos.length >= 1) {
+    if (currentRepos.length >= 1) {
       currentRepos.forEach(async element => {
-        if(element.currentUser === data.username) {
+        if (element.currentUser === data.username) {
           found = true
-          console.log('update')
-          await settings.findByIdAndUpdate(
-             (element.id),
-            { $set: { bool: data.boolean } }
-            )
-          }
-        })
-      }
-      if(!found) {
-        console.log('add')
-          new settings({
-            bool: data.boolean,
-            belongsTo: data.belongs,
-            hook: data.hook,
-            currentUser: data.username
-          }).save()
-      } 
-
-    if (data.boolean === true) {
-      setUpHook(data)
-
-    } else {
-      removeHook(data)
+          console.log("update")
+          await settings.findByIdAndUpdate(element.id, {
+            $set: { bool: data.boolean }
+          })
+        }
+      })
     }
-  })  
-      client.on('email', async mail => {
-       await User.findOneAndUpdate({username: mail.user}, {$set:{mail: mail.mail}})
-        console.log(mail.user)
+    if (!found) {
+      console.log("add")
+      new settings({
+        bool: data.boolean,
+        belongsTo: data.belongs,
+        hook: data.hook,
+        currentUser: data.username
+      }).save()
+    }
+  })
+  client.on("email", async mail => {
+    await User.findOneAndUpdate(
+      { username: mail.user },
+      { $set: { mail: mail.mail } }
+      )
+      console.log(mail.user)
+    })
+    client.on("removeEmail", async user => {
+      await User.findOneAndUpdate(
+        { username: user },
+        { $set: { mail: "NoEmail" } }
+        )
+        console.log("reset email")
       })
-      client.on('removeEmail', async (user) => {
-        await User.findOneAndUpdate({username: user}, {$set:{mail: "NoEmail"}})
-        console.log('reset email')
+      client.on("hookSettings", async hookData => {
+        if (hookData.boolean) {
+          console.log('update')
+          await setUpHook(hookData)
+        }else {
+          removeHook(hookData)
+        }
+    
       })
-}
+    }
+    
