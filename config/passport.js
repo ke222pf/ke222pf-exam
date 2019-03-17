@@ -19,7 +19,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: " https://examination1dv612.herokuapp.com/login/callback"
+      callbackURL: "https://examination1dv612.herokuapp.com/login/callback"
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
