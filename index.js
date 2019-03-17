@@ -3,7 +3,7 @@ const mongoose = require("./config/mongoose")
 const passport = require("passport")
 const cookieSession = require("cookie-session")
 var cookieParser = require("cookie-parser")
-const ecstatic = require('../lib/ecstatic')
+const ecstatic = require('ecstatic')
 
 require("dotenv").config()
 const PORT = process.env.PORT || 5000
