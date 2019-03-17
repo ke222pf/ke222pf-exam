@@ -41,6 +41,7 @@ server.get('/*', restify.plugins.serveStatic({
   directory: './client/build/',
   default: "index.html"
 }))
+path.join(__dirname, 'client', 'build', 'index.html')
 
 require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
