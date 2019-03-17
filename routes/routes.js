@@ -34,13 +34,13 @@ module.exports = server => {
     passport.authenticate("github"),
     (req, res, next) => {
       // rendera klient sida
-      res.redirect("/login", next)
+      res.redirect("https://examination1dv612.herokuapp.com/login", next)
     }
   )
 
   server.get("/api/logout", (req, res, next) => {
     req.logout()
-    res.redirect("/", next)
+    res.redirect("https://examination1dv612.herokuapp.com/", next)
   })
 
   server.get("/api/orgs", async (req, res, next) => {
