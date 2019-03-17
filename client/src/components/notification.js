@@ -16,7 +16,6 @@ export default class notification extends Component {
     this._isMounted = true
     this.fetchUnreadNotification()
     this.props.socket.on("notification", data => {
-
       if (this._isMounted) {
         this.setState({
           hookData: this.state.hookData.concat(data)
@@ -27,59 +26,76 @@ export default class notification extends Component {
   componentWillUnmount() {
     this._isMounted = false
   }
-  removeNotification (index) {
-      this.state.hookData.splice(index, 1)
-      this.setState({
-        hookdata: this.state.hookData
-      })
-      this.setState({firstTime: false})
-      console.log(this.state.hookData)
+  removeNotification(index) {
+    this.state.hookData.splice(index, 1)
+    this.setState({
+      hookdata: this.state.hookData
+    })
+    this.setState({ firstTime: false })
+    console.log(this.state.hookData)
   }
 
-  async fetchUnreadNotification () {
+  async fetchUnreadNotification() {
     const response = await fetch("/api/getNotifications")
-      const json = await response.json()
-      this.setState({
-        hookData: this.state.hookData.concat(json)
-      })
-      this.setState({firstTime: true})
-      console.log(this.state.unReadNotification)
+    const json = await response.json()
+    this.setState({
+      hookData: this.state.hookData.concat(json)
+    })
+    this.setState({ firstTime: true })
+    console.log(this.state.unReadNotification)
   }
 
   renderData() {
     console.log(this.state.hookData)
     if (this.state.hookData.length > 0) {
-        return this.state.hookData.map((item, index) => 
+      return this.state.hookData.map((item, index) => (
         <li key={index}>
-        {!item.subscribed ? 
-              <Collapsible>
-                <Button onClick={() => this.removeNotification(index)}>Remove</Button>
-              <CollapsibleItem header={item.sinceLastTime  === false ? "Since last time": "New Notification"} icon="whatshot">
+          {!item.subscribed ? (
+            <Collapsible>
+              <Button onClick={() => this.removeNotification(index)}>
+                Remove
+              </Button>
+              <CollapsibleItem
+                header={
+                  item.sinceLastTime === false
+                    ? "Since last time"
+                    : "New Notification"
+                }
+                icon="whatshot"
+              >
                 <p>{item.time}</p>
-                  <p className="info">repository: {item.repo}</p>
-                  <p className="info">action: {item.action}</p>
-                  <p className="info">from:{item.login}</p>
-                </CollapsibleItem>
-              </Collapsible>
-            :
-             <Collapsible>
-              <Button onClick={() => this.removeNotification(index)}>Remove</Button>
-              <CollapsibleItem header={'New Subscribtion'} icon="whatshot">
+                <p className="info">repository: {item.repo}</p>
+                <p className="info">action: {item.action}</p>
+                <p className="info">from:{item.login}</p>
+              </CollapsibleItem>
+            </Collapsible>
+          ) : (
+            <Collapsible>
+              <Button onClick={() => this.removeNotification(index)}>
+                Remove
+              </Button>
+              <CollapsibleItem header={"New Subscribtion"} icon="whatshot">
                 <p>{item.time}</p>
                 <p className="info">repository: {item.repo}</p>
                 <p className="info">{item.login}</p>
               </CollapsibleItem>
             </Collapsible>
-             }
-            </li>
-        )
-      } else {
+          )}
+        </li>
+      ))
+    } else {
       console.log("no hook")
       return null
     }
   }
 
   render() {
-    return  <Fragment><ul><div>{this.renderData()}</div></ul></Fragment>
+    return (
+      <Fragment>
+        <ul>
+          <div>{this.renderData()}</div>
+        </ul>
+      </Fragment>
+    )
   }
 }

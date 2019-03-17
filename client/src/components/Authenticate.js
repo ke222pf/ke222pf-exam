@@ -12,17 +12,20 @@ export default class Login extends Component {
   }
   async componentDidMount() {
     try {
-    const response = await fetch("/api/currentUser")
-    const json = await response.json()
-    this.setState({user: json})
-    console.log(json)
-    this.setState({ authenticate: json })
-  }
-  catch(e) {
-    console.log(e)
-  }
+      const response = await fetch("/api/currentUser")
+      const json = await response.json()
+      this.setState({ user: json })
+      console.log(json)
+      this.setState({ authenticate: json })
+    } catch (e) {
+      console.log(e)
+    }
   }
   render() {
-    return this.state.authenticate ? <LoginView currentUser={this.state.user}/> : <HomePage />
+    return this.state.authenticate ? (
+      <LoginView currentUser={this.state.user} />
+    ) : (
+      <HomePage />
+    )
   }
 }

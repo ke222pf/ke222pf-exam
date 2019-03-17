@@ -1,7 +1,13 @@
 import React, { Component } from "react"
 import { withRouter } from "react-router-dom"
 import "../Organization.css"
-import { Card, CardTitle, Col, Collection, CollectionItem  } from "react-materialize"
+import {
+  Card,
+  CardTitle,
+  Col,
+  Collection,
+  CollectionItem
+} from "react-materialize"
 import Toggle from "./Toggle"
 import "../Notifications.css"
 
@@ -52,23 +58,25 @@ class organization extends Component {
         return (
           <div key={index}>
             <Collection>
-              <CollectionItem><b>{value.repo}</b></CollectionItem>
-            {/* <h3>{value.repo}</h3> */}
+              <CollectionItem>
+                <b>{value.repo}</b>
+              </CollectionItem>
+              {/* <h3>{value.repo}</h3> */}
 
               <CollectionItem>
-            {value.admin ? (
-              <Toggle
-              hook={value.hook}
-              belongsTo={value.repo}
-              repo={value.repo}
-              socketIo={this.props.socket}
-              user={this.props.currentUser.username}
-              />
-              ) : (
-                <p>No promission allowed!</p>
+                {value.admin ? (
+                  <Toggle
+                    hook={value.hook}
+                    belongsTo={value.repo}
+                    repo={value.repo}
+                    socketIo={this.props.socket}
+                    user={this.props.currentUser.username}
+                  />
+                ) : (
+                  <p>No promission allowed!</p>
                 )}
-                </CollectionItem>
-                </Collection>
+              </CollectionItem>
+            </Collection>
           </div>
         )
       }

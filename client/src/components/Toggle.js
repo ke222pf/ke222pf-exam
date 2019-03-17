@@ -12,7 +12,7 @@ export default class Toggle extends Component {
 
   handleChange() {
     this.setState({
-      bool: !this.state.bool,
+      bool: !this.state.bool
     })
     console.log(!this.state.setting)
     console.log(this.props.belongsTo, !this.state.bool)

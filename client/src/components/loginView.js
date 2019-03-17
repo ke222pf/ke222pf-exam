@@ -14,7 +14,9 @@ import "../LoginView.css"
 import Notification from "./notification"
 import { checkMail } from "./checkEmail"
 import openSocket from "socket.io-client"
-const socketIo = openSocket("https://examination1dv612.herokuapp.com/" + process.env.PORT)
+const socketIo = openSocket(
+  "https://examination1dv612.herokuapp.com/" + process.env.PORT
+)
 
 export default class loginView extends Component {
   constructor(props) {
@@ -31,31 +33,33 @@ export default class loginView extends Component {
   componentDidMount() {
     console.log(this.props.currentUser.username)
     this.checkifUserHaveInputMail()
-
   }
   handleChange(e) {
     this.setState({
       email: e.target.value
-  })
+    })
   }
 
-  checkifUserHaveInputMail () {
+  checkifUserHaveInputMail() {
     checkMail(socketIo, setting => {
-      this.setState({haveMail: setting})
+      this.setState({ haveMail: setting })
       console.log(setting)
     })
   }
 
   keyPress(e) {
-    if(this.state.haveMail === "NoEmail") {
-      this.setState({haveMail: e.target.value})
+    if (this.state.haveMail === "NoEmail") {
+      this.setState({ haveMail: e.target.value })
       console.log(this.state.haveMail)
-      let payLoad = {mail: this.state.email, user: this.props.currentUser.username}
+      let payLoad = {
+        mail: this.state.email,
+        user: this.props.currentUser.username
+      }
       socketIo.emit("email", payLoad)
     } else {
-      socketIo.emit('removeEmail', this.props.currentUser.username)
-      this.setState({haveMail: "NoEmail"})
-      console.log('remove')
+      socketIo.emit("removeEmail", this.props.currentUser.username)
+      this.setState({ haveMail: "NoEmail" })
+      console.log("remove")
     }
     console.log("asd")
   }
@@ -68,23 +72,31 @@ export default class loginView extends Component {
           <SideNav
             trigger={<Button>Fill in Email for Notification</Button>}
             options={{ closeOnClick: true }}
-            >
+          >
             <SideNavItem
               userView
               user={{
-                img: <Icon>account_circle</Icon>,
+                img: <Icon>account_circle</Icon>
               }}
-              />
+            />
             <p className="wrapper">
-            <h3>Github Dashboard</h3>
-            <Icon>account_circle</Icon>
-            <p className="username">{this.props.currentUser.username}</p>
+              <h3>Github Dashboard</h3>
+              <Icon>account_circle</Icon>
+              <p className="username">{this.props.currentUser.username}</p>
             </p>
-            {this.state.haveMail === "NoEmail" || "" ?
-            <div>
-              <input
-                type="text"
-                onChange={this.handleChange}/> <Button onClick={this.keyPress}> Accept</Button></div> : <p>{this.state.haveMail !== "" ? this.state.haveMail : this.state.email}<Button onClick={this.keyPress}>Remove my Email</Button></p>}
+            {this.state.haveMail === "NoEmail" || "" ? (
+              <div>
+                <input type="text" onChange={this.handleChange} />{" "}
+                <Button onClick={this.keyPress}> Accept</Button>
+              </div>
+            ) : (
+              <p>
+                {this.state.haveMail !== ""
+                  ? this.state.haveMail
+                  : this.state.email}
+                <Button onClick={this.keyPress}>Remove my Email</Button>
+              </p>
+            )}
           </SideNav>
         </Navbar>
         <div className="div-left">
