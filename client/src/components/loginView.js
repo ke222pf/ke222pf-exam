@@ -14,7 +14,7 @@ import "../LoginView.css"
 import Notification from "./notification"
 import { checkMail } from "./checkEmail"
 import openSocket from "socket.io-client"
-const socketIo = openSocket("https://examination1dv612.herokuapp.com:80/")
+const socketIo = openSocket("ws://examination1dv612.herokuapp.com:80/")
 
 export default class loginView extends Component {
   constructor(props) {
