@@ -22,18 +22,19 @@ var csp = require("helmet-csp")
 
 server.use(
   csp({
-    defaultSrc: ["'self'", "default.com"],
-    scriptSrc: ["'self'", 'code.jquery.com'],
-    styleSrc: ["style.com"],
-    imgSrc: ["'self'"],
-    connectSrc: ["'self'", "wss//"],
-    fontSrc: ["font.com"],
-    objectSrc: ["object.com"],
-    mediaSrc: ["media.com"],
-    frameSrc: ["frame.com"],
-    sandbox: ["allow-forms", "allow-scripts"],
-    reportUri: "/report-violation",
-    reportOnly: false 
+    directives: {
+      defaultSrc: ["'self'", "default.com"],
+      scriptSrc: ["'self'", "code.jquery.com"],
+      styleSrc: ["'self'"],
+      imgSrc: ["'self'"],
+      connectSrc: ["'self'", "wss//57242057.ngrok.io"],
+      fontSrc: ["font.com"],
+      objectSrc: ["object.com"],
+      mediaSrc: ["media.com"],
+      frameSrc: ["frame.com"],
+      sandbox: ["allow-forms", "allow-scripts"],
+      reportUri: "/report-violation"
+    }
   })
 )
 
@@ -57,9 +58,16 @@ server.use(function(req, res, next) {
   next()
 })
 
+server.get(
+  /\/docs\/public\/?.*/,
+  restify.serveStatic({
+    directory: "./client/build"
+  })
+)
+
 require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
 
-server.listen(PORT, err => {
+server.listen(PORT || process.env.PORT, err => {
   console.log("%s listening at %s", server.name, server.url)
 })

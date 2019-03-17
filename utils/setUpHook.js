@@ -12,7 +12,7 @@ module.exports = async data => {
       events: ["push", "issues"],
       config: {
         content_type: "json",
-        url: `https://7b35f708.ngrok.io/hook/${currentUser.githubId}`
+        url: `https://examination1dv612.herokuapp.com//hook/${currentUser.githubId}`
       }
     },
     async (err, result) => {

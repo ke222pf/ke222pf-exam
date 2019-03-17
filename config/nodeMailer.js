@@ -1,8 +1,8 @@
 const nodemailer = require('nodemailer')
 const mailPayload = require('../config/MailPayload')
+require('dotenv').config()
 module.exports = async (mail, msg) => {
 
-    require('dotenv').config()
     console.log(msg)
 
     var transporter = nodemailer.createTransport({
