@@ -57,7 +57,7 @@ server.use(function(req, res, next) {
 })
 
 server.get('/*', restify.plugins.serveStatic({
-  directory: './client/build/',
+  directory: './client/build',
   default: 'index.html'
 }))
 
