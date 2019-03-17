@@ -3,6 +3,8 @@ const mongoose = require("./config/mongoose")
 const passport = require("passport")
 const cookieSession = require("cookie-session")
 var cookieParser = require("cookie-parser")
+const ecstatic = require('../lib/ecstatic')
+
 require("dotenv").config()
 const PORT = process.env.PORT || 5000
 require("./config/passport")
@@ -56,9 +58,9 @@ server.use(function(req, res, next) {
   next()
 })
 
-server.get('/', restify.plugins.serveStatic({
-  directory: './client/build',
-  default: "index.html"
+server.use(ecstatic({
+  root: `${__dirname}/client/build`,
+  showdir: true,
 }))
 
 require("./routes/routes")(server)
