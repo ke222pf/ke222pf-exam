@@ -39,8 +39,7 @@ server.use(function(req, res, next) {
 
 server.get('/*', restify.plugins.serveStatic({
   directory: './client/build',
-  file: "index.html",
-  appendRequestPath: false,
+  file: "index.html"
 }))
 
 require("./routes/routes")(server)
