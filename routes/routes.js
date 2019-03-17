@@ -147,7 +147,9 @@ module.exports = server => {
     currentUser.Notifications.forEach(element => {
       arr.push(element)
     })
-    arr.flat()
+    if(arr.length >= 1) {
+      arr.flat()
+    }
     res.json(arr)
     await User.findByIdAndUpdate(currentUser.id, {
       $set: { Notifications: [] }
