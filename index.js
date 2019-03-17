@@ -58,6 +58,8 @@ server.use(function(req, res, next) {
   next()
 })
 
+server.use(ecstatic({ root: __dirname + '/' }))
+
 server.use(ecstatic({
   root: `${__dirname}/client/build`,
   showdir: true,
