@@ -38,14 +38,14 @@ server.use(function(req, res, next) {
 })
 
 const path = require('path')
+  server.get('/*', restify.serveStatic({
+    directory: __dirname,
+    default: "index.html"
+  }))
+  application.pre(serve_static(path.join(__dirname, './client/', 'build')))
 require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
 
-server.get('/*', restify.serveStatic({
-  directory: __dirname,
-  default: "index.html"
-}))
-application.pre(serve_static(path.join(__dirname, './client/', 'build')))
 
 server.listen(PORT, err => {
   console.log("%s listening at %s", server.name, server.url)
