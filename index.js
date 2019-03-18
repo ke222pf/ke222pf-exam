@@ -41,12 +41,9 @@ server.use(function(req, res, next) {
 require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
 
-server.get("/css|js|img/", restify.plugins.serveStatic({
-  directory: "./public"
-}))
-server.get('/*', restify.plugins.serveStatic({
-  directory: './client/build',
-  appendRequestPath: false
+server.get(/.*/, restify.serveStatic({
+  directory: __dirname,
+  default: "index.html"
 }))
 
 server.listen(PORT, err => {
