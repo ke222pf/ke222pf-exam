@@ -37,6 +37,9 @@ server.use(function(req, res, next) {
   next()
 })
 
+
+require("./routes/routes")(server)
+require("./utils/connectSocket")(io)
 server.get('/*', restify.plugins.serveStatic({
   directory: './client/build',
   // file: "index.html",
@@ -44,9 +47,6 @@ server.get('/*', restify.plugins.serveStatic({
   appendRequestPath: false
 }))
 
-require("./routes/routes")(server)
-require("./utils/connectSocket")(io)
-
-server.listen(PORT || process.env.PORT, err => {
+server.listen(PORT, err => {
   console.log("%s listening at %s", server.name, server.url)
 })
