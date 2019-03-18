@@ -38,7 +38,7 @@ server.use(function(req, res, next) {
 })
 
 const path = require('path')
-  server.get('/*', restify.serveStatic({
+  server.get('/*', restify.plugins.serveStatic({
     directory: './client/build',
     default: "index.html"
   }))
