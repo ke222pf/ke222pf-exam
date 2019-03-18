@@ -42,7 +42,7 @@ const path = require('path')
 //     directory: './client/build',
 //     default: "index.html"
 //   }))
-  server.pre(restify.plugins.serveStatic({appendRequestPath: "false"}, path.join(__dirname, 'client', 'build')))
+  server.pre(restify.plugins.serveStatic({appendRequestPath: "false", directory: './client/build'}, path.join(__dirname, 'client', 'build')))
 require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
 
