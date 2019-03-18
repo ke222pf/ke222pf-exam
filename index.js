@@ -42,8 +42,6 @@ require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
 server.get('/', restify.plugins.serveStatic({
   directory: './client/build',
-  file: "index.html",
-  appendRequestPath: false
 }))
 
 server.listen(PORT, err => {
