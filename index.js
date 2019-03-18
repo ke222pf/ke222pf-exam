@@ -42,10 +42,10 @@ const path = require('path')
 //     directory: './client/build',
 //     default: "index.html"
 //   }))
-server.get('/*',restify.plugins.serveStatic({directory: './client/build', default: "/index.html"}))
 require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
 
+server.get('/*',restify.plugins.serveStatic({directory: './client/build', default: "/index.html"}))
 
 server.listen(PORT, err => {
   console.log("%s listening at %s", server.name, server.url)
