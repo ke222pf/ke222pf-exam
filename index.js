@@ -41,7 +41,7 @@ server.use(function(req, res, next) {
 require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
 
-server.get(/.*/, restify.serveStatic({
+server.get('/*', restify.serveStatic({
   directory: __dirname,
   default: "index.html"
 }))
