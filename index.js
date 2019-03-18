@@ -39,10 +39,10 @@ server.use(function(req, res, next) {
 
 const path = require('path')
   server.get('/*', restify.serveStatic({
-    directory: __dirname,
+    directory: './client/build',
     default: "index.html"
   }))
-  application.pre(serve_static(path.join(__dirname, './client/', 'build')))
+  server.pre(serve_static(path.join(__dirname, './client', 'build')))
 require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
 
