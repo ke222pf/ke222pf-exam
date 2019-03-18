@@ -40,7 +40,7 @@ server.use(function(req, res, next) {
 
 require("./routes/routes")(server)
 require("./utils/connectSocket")(io)
-server.get('/\/client\/public\/?.*/', restify.plugins.serveStatic({
+server.get('/*', restify.plugins.serveStatic({
   directory: './client/build',
   file: "index.html",
   appendRequestPath: false
