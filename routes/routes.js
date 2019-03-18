@@ -148,7 +148,7 @@ module.exports = server => {
       arr.push(element)
     })
     if(arr.length >= 1) {
-      arr.flat()
+      arr.reduce((acc, x) => acc.concat(x), [])
     }
     res.json(arr)
     await User.findByIdAndUpdate(currentUser.id, {
