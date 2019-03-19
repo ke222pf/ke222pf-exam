@@ -12,7 +12,7 @@ module.exports = async data => {
       events: ["push", "issues"],
       config: {
         content_type: "json",
-        url: `'http://localhost:5000'/hook/${currentUser.githubId}`
+        url: `https://d605a032.ngrok.io/hook/${currentUser.githubId}`
       }
     },
     async (err, result) => {

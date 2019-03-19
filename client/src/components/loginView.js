@@ -15,7 +15,7 @@ import Notification from "./notification"
 import { checkMail } from "./checkEmail"
 import openSocket from "socket.io-client"
 const socketIo = openSocket(
-  '/'
+  "http://localhost:5000"
 )
 
 export default class loginView extends Component {

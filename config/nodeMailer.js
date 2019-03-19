@@ -1,15 +1,15 @@
 const nodemailer = require('nodemailer')
 const mailPayload = require('../config/MailPayload')
-require('dotenv').config()
 module.exports = async (mail, msg) => {
-
-    console.log(msg)
-
+  
+  console.log(msg)
+  
+  require('dotenv').config()
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: "testnodemailerforexam@gmail.com", 
-            pass: "aikaikaik"
+            user: process.env.NodeMail, 
+            pass: process.env.NodeMailer_PASS
            }
        })
 

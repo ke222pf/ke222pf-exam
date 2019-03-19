@@ -34,13 +34,13 @@ module.exports = server => {
     passport.authenticate("github"),
     (req, res, next) => {
       // rendera klient sida
-      res.redirect("http://localhost:5000/login", next)
+      res.redirect("http://localhost:3000/login", next)
     }
   )
 
   server.get("/api/logout", (req, res, next) => {
     req.logout()
-    res.redirect("http://localhost:5000/", next)
+    res.redirect("http://localhost:3000/", next)
   })
 
   server.get("/api/orgs", async (req, res, next) => {
