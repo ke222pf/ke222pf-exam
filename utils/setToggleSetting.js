@@ -3,7 +3,6 @@ const User = require("../models/user")
 module.exports = (client, io) => {
   client.on("sendData", async data => {
     try {
-      console.log(data, 'is this the current user?')
       let currentUser = await User.findOne({ username: data })
       let result = await settings.find({})
       let arr = []

@@ -1,8 +1,8 @@
 const settings = require("../models/hookSettings")
 const setUpHook = require("./setUpHook")
 const removeHook = require("./removeHook")
-// const User = require("../models/user")
 const User = require("../models/user")
+
 module.exports = async client => {
   client.on("boolean", async data => {
     let found = false
@@ -11,7 +11,6 @@ module.exports = async client => {
       currentRepos.forEach(async element => {
         if (element.currentUser === data.username) {
           found = true
-          console.log("update")
           await settings.findByIdAndUpdate(element.id, {
             $set: { bool: data.boolean }
           })
@@ -19,7 +18,6 @@ module.exports = async client => {
       })
     }
     if (!found) {
-      console.log("add")
       new settings({
         bool: data.boolean,
         belongsTo: data.belongs,
@@ -33,18 +31,15 @@ module.exports = async client => {
       { username: mail.user },
       { $set: { mail: mail.mail } }
       )
-      console.log(mail.user)
     })
     client.on("removeEmail", async user => {
       await User.findOneAndUpdate(
         { username: user },
         { $set: { mail: "NoEmail" } }
         )
-        console.log("reset email")
       })
       client.on("hookSettings", async hookData => {
         if (hookData.boolean) {
-          console.log('update')
           await setUpHook(hookData)
         }else {
           removeHook(hookData)

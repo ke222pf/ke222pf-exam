@@ -31,7 +31,6 @@ export default class loginView extends Component {
     this.keyPress = this.keyPress.bind(this)
   }
   componentDidMount() {
-    console.log(this.props.currentUser.username)
     this.checkifUserHaveInputMail()
   }
   handleChange(e) {
@@ -43,14 +42,12 @@ export default class loginView extends Component {
   checkifUserHaveInputMail() {
     checkMail(socketIo, setting => {
       this.setState({ haveMail: setting })
-      console.log(setting)
     })
   }
 
   keyPress(e) {
     if (this.state.haveMail === "NoEmail") {
       this.setState({ haveMail: e.target.value })
-      console.log(this.state.haveMail)
       let payLoad = {
         mail: this.state.email,
         user: this.props.currentUser.username
@@ -59,9 +56,7 @@ export default class loginView extends Component {
     } else {
       socketIo.emit("removeEmail", this.props.currentUser.username)
       this.setState({ haveMail: "NoEmail" })
-      console.log("remove")
     }
-    console.log("asd")
   }
 
   render() {

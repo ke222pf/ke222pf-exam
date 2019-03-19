@@ -3,12 +3,10 @@ const User = require("../models/user")
 const passport = require("passport")
 
 passport.serializeUser((user, done) => {
-  // console.log(user.id, "from serialize")
   done(null, user.id)
 })
 
 passport.deserializeUser((id, done) => {
-  // console.log(id, "from mongoDB")
   User.findById(id).then(user => {
     done(null, user)
   })
@@ -28,7 +26,6 @@ passport.use(
         }
         // titta så att användaren inte skapar en kopia till databasen.
         await User.findOne({ githubId: profile.id }).then(currentUser => {
-          console.log(profile.username)
           
           if (currentUser) {
           
@@ -43,7 +40,6 @@ passport.use(
             })
               .save()
               .then(newUser => {
-                // console.log("created user" + newUser)
                 return done(null, newUser)
               })
           }
@@ -56,7 +52,6 @@ passport.use(
             console.log(err)
           }
         })
-        console.log('körs den?')
       } catch (e) {
         console.log("NOT ALLOWED", e)
       }

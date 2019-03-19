@@ -7,16 +7,12 @@ export default class Toggle extends Component {
       bool: this.checker()
     }
     this.handleChange = this.handleChange.bind(this)
-    console.log("asd")
   }
 
   handleChange() {
     this.setState({
       bool: !this.state.bool
     })
-    console.log(!this.state.setting)
-    console.log(this.props.belongsTo, !this.state.bool)
-    console.log(this.props.user)
     this.props.socketIo.emit("boolean", {
       belongs: this.props.repo,
       boolean: !this.state.bool,
@@ -35,7 +31,6 @@ export default class Toggle extends Component {
 
   checker() {
     toggelData(this.props.socketIo, this.props.user, settings => {
-      console.log(settings)
 
       let isChecked = false
       if (settings.length) {

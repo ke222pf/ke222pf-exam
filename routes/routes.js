@@ -1,4 +1,4 @@
-let github = require("octonode")
+
 const hook = require("../models/hookSender")
 const User = require("../models/user")
 require("dotenv").config()
@@ -98,9 +98,7 @@ module.exports = server => {
     let timeStamp = moment().format("YYYY-MM-DD LTS")
     let currentUser = await User.findOne({ githubId: req.params.id })
     if (req.io.sockets.sockets[currentUser.socketId] !== undefined) {
-      console.log(req.body.zen)
       if(req.body.zen) {
-        console.log('subscribed to a hook!')
         let hookData = {
           repo: req.body.repository.name,
           login: req.body.sender.login,
@@ -116,7 +114,6 @@ module.exports = server => {
           repo: req.body.repository.name,
           time: timeStamp
         }
-        console.log(hookData, "hook data")
         req.io.to(currentUser.socketId).emit("notification", hookData)
       }
       res.send(200)
@@ -129,19 +126,16 @@ module.exports = server => {
         time: timeStamp,
         sinceLastTime: false
       }
-      console.log(currentUser.id)
       await User.findByIdAndUpdate(
         currentUser.id,
         { $push: { Notifications: hookData } },
         { upsert: true, new: true }
       )
       nodeMailer(currentUser.mail, hookData)
-      console.log("Socket not connected")
     }
   })
 
   server.get("/api/getNotifications", async (req, res, next) => {
-    console.log(req.user.username, "this is the user")
     let currentUser = await User.findOne({ username: req.user.username })
     let arr = []
     currentUser.Notifications.forEach(element => {

@@ -20,7 +20,6 @@ module.exports = async data => {
         console.log(err.body.errors)
       }
       if (result) {
-          console.log('updated hook')
         await new hook({
           hookId: result.id,
           idUser: currentUser.githubId,

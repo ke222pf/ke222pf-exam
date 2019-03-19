@@ -32,7 +32,6 @@ export default class notification extends Component {
       hookdata: this.state.hookData
     })
     this.setState({ firstTime: false })
-    console.log(this.state.hookData)
   }
 
   async fetchUnreadNotification() {
@@ -42,11 +41,9 @@ export default class notification extends Component {
       hookData: this.state.hookData.concat(json)
     })
     this.setState({ firstTime: true })
-    console.log(this.state.unReadNotification)
   }
 
   renderData() {
-    console.log(this.state.hookData)
     if (this.state.hookData.length > 0) {
       return this.state.hookData.map((item, index) => (
         <li key={index}>
@@ -84,7 +81,6 @@ export default class notification extends Component {
         </li>
       ))
     } else {
-      console.log("no hook")
       return null
     }
   }

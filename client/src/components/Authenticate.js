@@ -15,7 +15,6 @@ export default class Login extends Component {
       const response = await fetch("/api/currentUser")
       const json = await response.json()
       this.setState({ user: json })
-      console.log(json)
       this.setState({ authenticate: json })
     } catch (e) {
       console.log(e)
