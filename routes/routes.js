@@ -1,4 +1,3 @@
-
 const hook = require("../models/hookSender")
 const User = require("../models/user")
 require("dotenv").config()
@@ -8,7 +7,7 @@ const moment = require("moment")
 const nodeMailer = require("../config/nodeMailer")
 const setIfUserWantsMail = require("../utils/setIfUserWantMail")
 moment.locale("sv")
- 
+
 module.exports = server => {
   server.get(
     "/api/login/github",
@@ -98,7 +97,7 @@ module.exports = server => {
     let timeStamp = moment().format("YYYY-MM-DD LTS")
     let currentUser = await User.findOne({ githubId: req.params.id })
     if (req.io.sockets.sockets[currentUser.socketId] !== undefined) {
-      if(req.body.zen) {
+      if (req.body.zen) {
         let hookData = {
           repo: req.body.repository.name,
           login: req.body.sender.login,
@@ -121,7 +120,7 @@ module.exports = server => {
       let hookData = {
         login: req.body.sender.login,
         action:
-            req.headers["x-github-event"] + " " + req.body.action || "commits",
+          req.headers["x-github-event"] + " " + req.body.action || "commits",
         repo: req.body.repository.name,
         time: timeStamp,
         sinceLastTime: false
@@ -141,7 +140,7 @@ module.exports = server => {
     currentUser.Notifications.forEach(element => {
       arr.push(element)
     })
-    if(arr.length >= 1) {
+    if (arr.length >= 1) {
       arr.reduce((acc, x) => acc.concat(x), [])
     }
     res.json(arr)

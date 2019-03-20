@@ -31,7 +31,6 @@ export default class Toggle extends Component {
 
   checker() {
     toggelData(this.props.socketIo, this.props.user, settings => {
-
       let isChecked = false
       if (settings.length) {
         settings.forEach(element => {

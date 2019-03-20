@@ -8,7 +8,7 @@ const NotificationSetting = new Schema({
   },
   belongsTo: {
     type: String,
-    required: true,
+    required: true
   },
   hook: {
     type: String,

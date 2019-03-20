@@ -15,8 +15,8 @@ const hook = new Schema({
     required: true
   },
   belongs: {
-      type: String,
-      require: true
+    type: String,
+    require: true
   }
 })
 

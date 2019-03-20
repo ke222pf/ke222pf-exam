@@ -30,21 +30,19 @@ module.exports = async client => {
     await User.findOneAndUpdate(
       { username: mail.user },
       { $set: { mail: mail.mail } }
-      )
-    })
-    client.on("removeEmail", async user => {
-      await User.findOneAndUpdate(
-        { username: user },
-        { $set: { mail: "NoEmail" } }
-        )
-      })
-      client.on("hookSettings", async hookData => {
-        if (hookData.boolean) {
-          await setUpHook(hookData)
-        }else {
-          removeHook(hookData)
-        }
-    
-      })
+    )
+  })
+  client.on("removeEmail", async user => {
+    await User.findOneAndUpdate(
+      { username: user },
+      { $set: { mail: "NoEmail" } }
+    )
+  })
+  client.on("hookSettings", async hookData => {
+    if (hookData.boolean) {
+      await setUpHook(hookData)
+    } else {
+      removeHook(hookData)
     }
-    
+  })
+}

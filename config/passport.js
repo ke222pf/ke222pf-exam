@@ -26,10 +26,7 @@ passport.use(
         }
         // titta så att användaren inte skapar en kopia till databasen.
         await User.findOne({ githubId: profile.id }).then(currentUser => {
-          
           if (currentUser) {
-          
-
             return done(null, currentUser)
           } else {
             new User({
@@ -46,12 +43,13 @@ passport.use(
         })
         await User.findOneAndUpdate(
           { githubId: profile.id },
-          { $set: { token: accessToken } }
-        , (err, result) => {
-          if(err) {
-            console.log(err)
+          { $set: { token: accessToken } },
+          (err, result) => {
+            if (err) {
+              console.log(err)
+            }
           }
-        })
+        )
       } catch (e) {
         console.log("NOT ALLOWED", e)
       }
